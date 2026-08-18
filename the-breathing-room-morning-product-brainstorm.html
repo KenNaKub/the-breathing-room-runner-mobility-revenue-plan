@@ -1,0 +1,1211 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="A board-discussion deck for two standalone Tuesday and Thursday morning product concepts at The Breathing Room Bangkok: Desk Reset 40 and Runner Reset 45.">
+  <title>Morning Product Brainstorm — The Breathing Room</title>
+  <style>
+    :root {
+      --paper: #f5f3ed;
+      --paper-2: #fffdf8;
+      --ink: #15251f;
+      --muted: #5f6b65;
+      --line: #d7d8cf;
+      --forest: #173f36;
+      --forest-2: #2d6457;
+      --mint: #dfeae5;
+      --signal: #e86e4a;
+      --signal-soft: #f8e3da;
+      --lime: #dce982;
+      --lime-deep: #aebc43;
+      --lime-soft: #f0f4cf;
+      --warning: #f3e5bf;
+      --bar-height: 62px;
+      --shadow: 0 24px 70px rgba(23, 63, 54, .12);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-snap-type: y mandatory; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "Avenir Next", Avenir, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.45;
+      -webkit-font-smoothing: antialiased;
+    }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    a { color: var(--forest-2); text-decoration-color: rgba(45, 100, 87, .35); text-underline-offset: 3px; }
+    a:hover { color: var(--signal); }
+    button { font: inherit; }
+    h1, h2, h3, blockquote { font-family: Georgia, "Times New Roman", serif; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 {
+      max-width: 1000px;
+      margin-bottom: clamp(22px, 3vw, 38px);
+      font-size: clamp(52px, 7.4vw, 112px);
+      font-weight: 600;
+      letter-spacing: -.045em;
+      line-height: .96;
+    }
+    h2 {
+      margin-bottom: 12px;
+      font-size: clamp(38px, 5vw, 70px);
+      font-weight: 600;
+      letter-spacing: -.035em;
+      line-height: 1;
+    }
+    h3 {
+      margin-bottom: 8px;
+      font-size: clamp(20px, 2vw, 28px);
+      font-weight: 600;
+      letter-spacing: -.018em;
+      line-height: 1.08;
+    }
+    strong { font-weight: 760; }
+
+    .topbar {
+      position: fixed;
+      z-index: 50;
+      top: 0;
+      right: 0;
+      left: 0;
+      height: var(--bar-height);
+      border-bottom: 1px solid rgba(215, 216, 207, .92);
+      background: rgba(245, 243, 237, .94);
+      backdrop-filter: blur(16px);
+    }
+    .topbar-inner {
+      width: min(1440px, calc(100% - 34px));
+      height: 100%;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .brand {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 780;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .brand:hover { color: var(--ink); }
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--forest);
+      color: var(--lime);
+      font-family: Georgia, serif;
+      font-size: 16px;
+      font-weight: 700;
+    }
+    .top-actions { display: flex; align-items: center; gap: 7px; }
+    .top-link, .control {
+      min-height: 36px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 13px;
+      background: rgba(255, 255, 255, .58);
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 750;
+      line-height: 1;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .top-link:hover, .control:hover { border-color: var(--forest-2); color: var(--forest); }
+    .control.primary { border-color: var(--forest); background: var(--forest); color: white; }
+    .control.primary:hover { border-color: var(--signal); background: var(--signal); color: white; }
+    .slide-count {
+      min-width: 60px;
+      color: var(--muted);
+      font-size: 11px;
+      font-variant-numeric: tabular-nums;
+      font-weight: 750;
+      text-align: center;
+    }
+    .progress {
+      position: fixed;
+      z-index: 55;
+      top: calc(var(--bar-height) - 2px);
+      left: 0;
+      width: 10%;
+      height: 2px;
+      background: var(--signal);
+      transition: width .25s ease;
+    }
+
+    .slide-index {
+      position: fixed;
+      z-index: 40;
+      top: 50%;
+      right: 17px;
+      display: grid;
+      gap: 9px;
+      transform: translateY(-50%);
+    }
+    .slide-dot {
+      width: 9px;
+      height: 9px;
+      display: block;
+      border: 1px solid rgba(23, 63, 54, .42);
+      border-radius: 50%;
+      background: rgba(245, 243, 237, .82);
+      transition: transform .2s ease, background .2s ease;
+    }
+    .slide-dot:hover { transform: scale(1.35); }
+    .slide-dot.active { border-color: var(--signal); background: var(--signal); transform: scale(1.35); }
+
+    .deck { overflow: clip; }
+    .slide {
+      position: relative;
+      min-height: 100svh;
+      display: grid;
+      align-items: center;
+      scroll-margin-top: 0;
+      scroll-snap-align: start;
+      overflow: hidden;
+      border-bottom: 1px solid var(--line);
+      padding: calc(var(--bar-height) + clamp(28px, 4vw, 62px)) clamp(30px, 6vw, 92px) clamp(34px, 5vw, 68px);
+      isolation: isolate;
+    }
+    .slide:nth-child(even) { background: var(--paper-2); }
+    .slide::before {
+      position: absolute;
+      z-index: -2;
+      top: -13rem;
+      right: -11rem;
+      width: 34rem;
+      height: 34rem;
+      border-radius: 50%;
+      background: rgba(220, 233, 130, .16);
+      content: "";
+    }
+    .slide-inner {
+      position: relative;
+      width: min(1360px, 100%);
+      margin: 0 auto;
+    }
+    .slide-number {
+      margin-bottom: 15px;
+      color: var(--signal);
+      font-family: Georgia, serif;
+      font-size: clamp(20px, 2.2vw, 31px);
+      font-weight: 700;
+      line-height: 1;
+    }
+    .eyebrow {
+      margin-bottom: 13px;
+      color: var(--signal);
+      font-size: 10px;
+      font-weight: 850;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+    .lede {
+      max-width: 900px;
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: clamp(17px, 1.6vw, 23px);
+      line-height: 1.42;
+    }
+    .fine {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.45;
+    }
+    .accent { color: var(--lime-deep); }
+    .signal { color: var(--signal); }
+    .nowrap { white-space: nowrap; }
+    .desktop-only { display: initial; }
+
+    .botanical {
+      position: absolute;
+      z-index: -1;
+      right: -3%;
+      bottom: -16%;
+      width: min(42vw, 610px);
+      height: auto;
+      color: rgba(45, 100, 87, .21);
+      pointer-events: none;
+    }
+    .botanical-ring {
+      position: absolute;
+      z-index: -1;
+      right: 8%;
+      bottom: 4%;
+      width: clamp(160px, 20vw, 290px);
+      aspect-ratio: 1;
+      border: 2px solid rgba(174, 188, 67, .72);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .cover .slide-inner { display: grid; grid-template-columns: 1.24fr .76fr; gap: clamp(34px, 6vw, 92px); align-items: end; }
+    .cover h1 { margin-bottom: 22px; }
+    .cover .lede { max-width: 750px; }
+    .brand-rule {
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      height: 1px;
+      background: var(--line);
+    }
+    .brand-values {
+      position: absolute;
+      top: -30px;
+      right: 0;
+      color: var(--signal);
+      font-size: 9px;
+      font-weight: 850;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+    .concept-list { display: grid; gap: 12px; }
+    .concept-card {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 15px;
+      align-items: center;
+      padding: 17px 18px;
+      border: 1px solid var(--line);
+      background: rgba(255, 253, 248, .75);
+    }
+    .concept-no {
+      width: 47px;
+      height: 47px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--signal);
+      color: white;
+      font-weight: 800;
+    }
+    .concept-card b { display: block; font-size: 18px; }
+    .concept-card small { color: var(--muted); font-size: 9px; font-weight: 800; letter-spacing: .11em; text-transform: uppercase; }
+    .date-line {
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(16px, 2vw, 28px); }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(14px, 1.8vw, 24px); }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 13px; }
+    .split-lean-left { display: grid; grid-template-columns: .86fr 1.14fr; gap: clamp(22px, 4vw, 60px); align-items: start; }
+    .split-lean-right { display: grid; grid-template-columns: 1.15fr .85fr; gap: clamp(22px, 4vw, 60px); align-items: start; }
+    .top-space { margin-top: clamp(24px, 4vw, 48px); }
+
+    .metric {
+      min-height: 158px;
+      padding: clamp(20px, 2.2vw, 30px);
+      border: 1px solid var(--line);
+      background: rgba(255, 253, 248, .78);
+    }
+    .metric strong {
+      display: block;
+      margin-bottom: 10px;
+      color: var(--forest);
+      font-family: Georgia, serif;
+      font-size: clamp(36px, 4vw, 58px);
+      font-weight: 600;
+      line-height: .9;
+    }
+    .metric p { margin: 0; color: var(--muted); font-size: 12px; }
+    .metric.signal-card { border-color: #eab9a9; background: var(--signal-soft); }
+    .metric.signal-card strong { color: var(--signal); }
+
+    .thesis {
+      padding: clamp(23px, 3vw, 40px);
+      background: var(--forest);
+      color: white;
+      box-shadow: var(--shadow);
+    }
+    .thesis small { color: var(--lime); font-size: 9px; font-weight: 850; letter-spacing: .14em; text-transform: uppercase; }
+    .thesis blockquote {
+      margin: 18px 0 0;
+      font-size: clamp(27px, 3.3vw, 48px);
+      line-height: 1.14;
+      letter-spacing: -.025em;
+    }
+    .thesis p { margin: 15px 0 0; color: #cfe0da; font-size: 12px; }
+
+    .legend { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: rgba(255, 255, 255, .5);
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 760;
+    }
+    .pill::before { width: 7px; height: 7px; border-radius: 50%; background: var(--forest-2); content: ""; }
+    .pill.hypothesis::before { background: var(--signal); }
+    .pill.unknown::before { background: #d3a645; }
+
+    .principle {
+      min-height: 170px;
+      padding: 23px;
+      border-top: 4px solid var(--forest-2);
+      background: var(--paper-2);
+    }
+    .principle:nth-child(2) { border-color: var(--lime-deep); }
+    .principle:nth-child(3) { border-color: var(--signal); }
+    .principle small { color: var(--signal); font-size: 9px; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
+    .principle h3 { margin: 13px 0 8px; }
+    .principle p { margin: 0; color: var(--muted); font-size: 13px; }
+    .anti-list { display: grid; gap: 10px; }
+    .anti-item {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 12px;
+      align-items: start;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .anti-item:last-child { border-bottom: 0; }
+    .anti-mark { color: var(--signal); font-size: 18px; font-weight: 900; line-height: 1; }
+    .anti-item b { display: block; margin-bottom: 3px; }
+    .anti-item span { color: var(--muted); font-size: 12px; }
+
+    .product-heading { display: grid; grid-template-columns: 1fr auto; gap: 26px; align-items: end; }
+    .product-promise {
+      max-width: 720px;
+      margin: 20px 0 0;
+      color: var(--lime-deep);
+      font-family: Georgia, serif;
+      font-size: clamp(24px, 2.7vw, 39px);
+      font-weight: 700;
+      line-height: 1.16;
+    }
+    .product-tag {
+      min-width: 160px;
+      padding: 17px 20px;
+      border-left: 4px solid var(--signal);
+      background: var(--signal-soft);
+    }
+    .product-tag small { display: block; color: #7d3d29; font-size: 9px; font-weight: 850; letter-spacing: .11em; text-transform: uppercase; }
+    .product-tag b { display: block; margin-top: 5px; color: #613626; font-family: Georgia, serif; font-size: 23px; }
+    .fact-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0;
+      margin-top: 24px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+    .fact {
+      flex: 1 1 130px;
+      min-width: 0;
+      padding: 14px 18px 14px 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .fact:not(:last-child)::after { float: right; color: var(--lime-deep); content: "•"; }
+    .fact b { color: var(--ink); font-size: 15px; }
+
+    .evidence-panel {
+      padding: 23px;
+      border: 1px solid var(--line);
+      background: rgba(255, 253, 248, .76);
+    }
+    .evidence-panel h3 { font-family: inherit; font-size: 11px; font-weight: 850; letter-spacing: .13em; text-transform: uppercase; }
+    .evidence-panel ul { margin: 15px 0 0; padding: 0; list-style: none; }
+    .evidence-panel li { padding: 12px 0; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; }
+    .evidence-panel li b { color: var(--ink); }
+    sup a { color: var(--signal); font-size: 9px; font-weight: 850; text-decoration: none; }
+    .boundary {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-left: 4px solid var(--signal);
+      background: var(--signal-soft);
+      color: #613626;
+      font-size: 11px;
+    }
+
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      margin-top: clamp(22px, 3vw, 36px);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+    .timeline-step { position: relative; min-height: 146px; padding: 21px 17px; }
+    .timeline-step:not(:last-child) { border-right: 1px solid var(--line); }
+    .timeline-step small { display: block; color: var(--signal); font-size: 9px; font-weight: 850; letter-spacing: .1em; text-transform: uppercase; }
+    .timeline-step b { display: block; margin: 8px 0 5px; color: var(--forest); font-size: 13px; }
+    .timeline-step p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.4; }
+    .deliverable {
+      padding: 22px;
+      border: 1px solid #c9d06f;
+      background: var(--lime-soft);
+    }
+    .deliverable small { display: block; color: #68721c; font-size: 9px; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
+    .deliverable h3 { margin: 8px 0; }
+    .deliverable p { margin: 0; color: #59601d; font-size: 12px; }
+    .test-card {
+      padding: 22px;
+      background: var(--forest);
+      color: white;
+    }
+    .test-card small { color: var(--lime); font-size: 9px; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
+    .test-card h3 { margin: 8px 0; }
+    .test-card p { margin: 0; color: #d5e3de; font-size: 12px; }
+    .test-card .gate { display: block; margin-top: 14px; color: white; font-family: Georgia, serif; font-size: 20px; }
+
+    .edition-choice { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; }
+    .edition {
+      padding: 17px;
+      border: 1px solid var(--line);
+      background: var(--paper-2);
+    }
+    .edition.recommended { border-color: var(--forest-2); }
+    .edition small { color: var(--signal); font-size: 9px; font-weight: 850; letter-spacing: .1em; text-transform: uppercase; }
+    .edition b { display: block; margin: 7px 0 4px; color: var(--forest); font-family: Georgia, serif; font-size: 20px; }
+    .edition p { margin: 0; color: var(--muted); font-size: 11px; }
+
+    .compare { width: 100%; border-collapse: collapse; border: 1px solid var(--line); background: rgba(255, 253, 248, .78); font-size: 12px; }
+    .compare th, .compare td { padding: 13px 16px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    .compare th { color: var(--muted); font-size: 9px; font-weight: 850; letter-spacing: .11em; text-transform: uppercase; }
+    .compare th:nth-child(2), .compare td:nth-child(2) { background: rgba(240, 244, 207, .58); }
+    .compare th:nth-child(3), .compare td:nth-child(3) { background: rgba(248, 227, 218, .5); }
+    .compare td:first-child { width: 19%; color: var(--muted); font-weight: 750; }
+    .compare td b { color: var(--ink); }
+    .compare tr:last-child td { border-bottom: 0; }
+    .board-read {
+      margin-top: 15px;
+      padding: 16px 19px;
+      border-left: 4px solid var(--signal);
+      background: var(--signal-soft);
+      color: #613626;
+      font-size: 12px;
+    }
+
+    .formula {
+      padding: clamp(22px, 3vw, 36px);
+      background: var(--forest);
+      color: white;
+      box-shadow: var(--shadow);
+    }
+    .formula small { color: var(--lime); font-size: 9px; font-weight: 850; letter-spacing: .13em; text-transform: uppercase; }
+    .formula code {
+      display: block;
+      margin: 18px 0;
+      color: white;
+      font-family: Georgia, serif;
+      font-size: clamp(20px, 2.5vw, 34px);
+      line-height: 1.25;
+    }
+    .formula p { margin: 0; color: #cfe0da; font-size: 11px; }
+    .steps { display: grid; gap: 8px; }
+    .step {
+      display: grid;
+      grid-template-columns: 38px 1fr;
+      gap: 13px;
+      align-items: start;
+      padding: 13px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .step:last-child { border-bottom: 0; }
+    .step-no {
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--signal);
+      color: white;
+      font-size: 11px;
+      font-weight: 850;
+    }
+    .step b { display: block; font-size: 13px; }
+    .step p { margin: 3px 0 0; color: var(--muted); font-size: 11px; }
+    .stop-rule {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border: 1px solid #e1c980;
+      background: var(--warning);
+      color: #5e4818;
+      font-size: 11px;
+    }
+
+    .decision-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 13px; }
+    .decision-card {
+      min-height: 170px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      background: var(--paper-2);
+    }
+    .decision-card:nth-child(1) { border-top: 5px solid var(--lime-deep); }
+    .decision-card:nth-child(2) { border-top: 5px solid var(--signal); }
+    .decision-card:nth-child(3) { border-top: 5px solid var(--forest); }
+    .decision-card small { color: var(--muted); font-size: 9px; font-weight: 850; letter-spacing: .11em; text-transform: uppercase; }
+    .decision-card h3 { margin: 10px 0 8px; }
+    .decision-card p { margin: 0; color: var(--muted); font-size: 12px; }
+    .questions { margin: 0; padding-left: 20px; columns: 2; column-gap: 42px; }
+    .questions li { break-inside: avoid; margin: 0 0 10px; padding-left: 3px; font-size: 12px; }
+    .source-strip {
+      margin-top: 20px;
+      padding-top: 15px;
+      border-top: 1px solid var(--line);
+    }
+    .source-strip b { display: block; margin-bottom: 6px; font-size: 9px; letter-spacing: .12em; text-transform: uppercase; }
+    .source-strip p { margin: 0; color: var(--muted); font-size: 9.5px; line-height: 1.5; }
+    .source-strip a { color: var(--muted); }
+
+    .slide-footer {
+      position: absolute;
+      right: 0;
+      bottom: -30px;
+      left: 0;
+      display: flex;
+      justify-content: space-between;
+      color: rgba(95, 107, 101, .75);
+      font-size: 9px;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+
+    @media (min-width: 761px) and (max-height: 820px) {
+      h1 { font-size: clamp(58px, 6.4vw, 82px); margin-bottom: 15px; }
+      h2 { margin-bottom: 7px; font-size: clamp(38px, 4vw, 52px); }
+      h3 { margin-bottom: 5px; font-size: clamp(17px, 1.6vw, 22px); }
+      .slide {
+        height: 100svh;
+        min-height: 100svh;
+        padding: calc(var(--bar-height) + 15px) clamp(38px, 4.5vw, 68px) 27px;
+      }
+      .slide-number { margin-bottom: 7px; font-size: 21px; }
+      .eyebrow { margin-bottom: 7px; font-size: 8px; }
+      .lede { font-size: clamp(14px, 1.25vw, 17px); line-height: 1.32; }
+      .top-space { margin-top: 15px; }
+      .grid-2, .grid-3 { gap: 12px; }
+      .grid-4 { gap: 9px; }
+      .cover h1 { margin-bottom: 14px; }
+      .concept-list { gap: 8px; }
+      .concept-card { padding: 10px 12px; }
+      .concept-no { width: 36px; height: 36px; font-size: 12px; }
+      .concept-card b { font-size: 15px; }
+      .date-line { margin-top: 10px; padding-top: 9px; }
+      .metric { min-height: 107px; padding: 15px; }
+      .metric strong { margin-bottom: 6px; font-size: 35px; }
+      .metric p { font-size: 10px; line-height: 1.35; }
+      .thesis { padding: 20px; }
+      .thesis blockquote { margin-top: 9px; font-size: clamp(23px, 2.5vw, 33px); }
+      .thesis p { margin-top: 8px; font-size: 10px; }
+      .legend { margin-top: 9px; }
+      .pill { padding: 4px 8px; font-size: 8px; }
+      .boundary { margin-top: 8px; padding: 9px 11px; font-size: 9.5px; }
+      .principle { min-height: 116px; padding: 15px; }
+      .principle h3 { margin: 7px 0 4px; }
+      .principle p { font-size: 10.5px; line-height: 1.35; }
+      .anti-list { gap: 0; }
+      .anti-item { padding: 7px 0; }
+      .anti-item b { margin-bottom: 1px; font-size: 11px; }
+      .anti-item span { font-size: 9.5px; }
+      .product-promise { margin-top: 9px; font-size: clamp(21px, 2.1vw, 28px); }
+      .product-tag { min-width: 140px; padding: 10px 13px; }
+      .product-tag b { font-size: 18px; }
+      .fact-row { margin-top: 12px; }
+      .fact { padding: 8px 13px 8px 0; font-size: 9.5px; }
+      .fact b { font-size: 12px; }
+      .evidence-panel { padding: 14px; }
+      .evidence-panel h3 { font-size: 8px; }
+      .evidence-panel ul { margin-top: 7px; }
+      .evidence-panel li { padding: 6px 0; font-size: 9.5px; line-height: 1.35; }
+      .fine { font-size: 9.5px; }
+      .timeline { margin-top: 13px; }
+      .timeline-step { min-height: 102px; padding: 12px 10px; }
+      .timeline-step small { font-size: 7.5px; }
+      .timeline-step b { margin: 5px 0 3px; font-size: 11px; }
+      .timeline-step p { font-size: 9px; line-height: 1.3; }
+      .deliverable, .test-card { padding: 14px; }
+      .deliverable p, .test-card p { font-size: 9.5px; }
+      .test-card .gate { margin-top: 7px; font-size: 15px; }
+      .edition { padding: 12px; }
+      .edition b { margin: 4px 0 2px; font-size: 16px; }
+      .edition p { font-size: 9px; }
+      .compare { font-size: 9.5px; line-height: 1.3; }
+      .compare th, .compare td { padding: 7px 10px; }
+      .board-read { margin-top: 8px; padding: 9px 12px; font-size: 9.5px; }
+      .formula { padding: 21px; }
+      .formula code { margin: 10px 0; font-size: clamp(18px, 2vw, 25px); }
+      .formula p { font-size: 9px; }
+      .steps { gap: 0; }
+      .step { grid-template-columns: 30px 1fr; gap: 8px; padding: 7px 0; }
+      .step-no { width: 24px; height: 24px; font-size: 9px; }
+      .step b { font-size: 10.5px; }
+      .step p { margin-top: 1px; font-size: 9px; }
+      .stop-rule { margin-top: 7px; padding: 8px 10px; font-size: 9px; }
+      .decision-card { min-height: 119px; padding: 14px; }
+      .decision-card h3 { margin: 6px 0 4px; }
+      .decision-card p { font-size: 9.5px; }
+      .questions { column-gap: 25px; }
+      .questions li { margin-bottom: 5px; font-size: 9.5px; }
+      .source-strip { margin-top: 9px; padding-top: 7px; }
+      .source-strip b { margin-bottom: 3px; font-size: 7px; }
+      .source-strip p { font-size: 7.4px; line-height: 1.35; }
+      .slide-footer { bottom: -20px; font-size: 7px; }
+    }
+
+    @media (max-width: 1050px) {
+      .cover .slide-inner, .split-lean-left, .split-lean-right { grid-template-columns: 1fr; }
+      .cover .slide-inner { align-items: start; }
+      .cover .concept-list { grid-template-columns: 1fr 1fr; }
+      .grid-4 { grid-template-columns: repeat(2, 1fr); }
+      .product-heading { grid-template-columns: 1fr; }
+      .product-tag { width: fit-content; }
+      .timeline { grid-template-columns: repeat(5, minmax(135px, 1fr)); overflow-x: auto; }
+    }
+
+    @media (max-width: 760px) {
+      :root { --bar-height: 58px; }
+      html { scroll-snap-type: none; }
+      h1 { font-size: clamp(46px, 14vw, 74px); }
+      h2 { font-size: clamp(37px, 11vw, 56px); }
+      .topbar-inner { width: calc(100% - 20px); gap: 8px; }
+      .brand > span:last-child { max-width: 128px; overflow: hidden; text-overflow: ellipsis; }
+      .top-link, .control { min-width: 35px; padding: 8px 10px; }
+      .top-link .label, .control .label { display: none; }
+      .slide-count { min-width: 46px; }
+      .slide-index { display: none; }
+      .slide {
+        min-height: 100svh;
+        align-items: start;
+        overflow: visible;
+        padding: calc(var(--bar-height) + 38px) 20px 62px;
+      }
+      .slide-inner { width: 100%; }
+      .brand-values { display: none; }
+      .cover .concept-list, .grid-2, .grid-3, .decision-grid, .edition-choice { grid-template-columns: 1fr; }
+      .grid-4 { grid-template-columns: 1fr 1fr; }
+      .metric { min-height: 132px; }
+      .timeline { grid-template-columns: 1fr; overflow: visible; }
+      .timeline-step { min-height: 0; padding: 16px 2px; }
+      .timeline-step:not(:last-child) { border-right: 0; border-bottom: 1px solid var(--line); }
+      .fact-row { display: grid; grid-template-columns: 1fr 1fr; }
+      .fact:not(:last-child)::after { display: none; }
+      .compare, .compare tbody, .compare tr, .compare td { display: block; }
+      .compare thead { display: none; }
+      .compare tr { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--line); }
+      .compare td { min-height: 100%; border-bottom: 0; }
+      .compare td:first-child { width: auto; grid-column: 1 / -1; padding-bottom: 7px; background: #efeee8; }
+      .questions { columns: 1; }
+      .botanical { width: 84vw; opacity: .65; }
+      .slide-footer { position: static; margin-top: 27px; }
+    }
+
+    @media (max-width: 480px) {
+      .grid-4, .fact-row { grid-template-columns: 1fr; }
+      .metric { min-height: 0; }
+      .compare tr { grid-template-columns: 1fr; }
+      .compare td:first-child { grid-column: auto; }
+      .desktop-only { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+    }
+
+    @page { size: A4 landscape; margin: 0; }
+    @media print {
+      :root { --paper: #fff; --paper-2: #fff; --shadow: none; }
+      html { scroll-snap-type: none; }
+      body { background: #fff; }
+      .topbar, .progress, .slide-index { display: none !important; }
+      .deck { overflow: visible; }
+      .slide {
+        width: 297mm;
+        height: 210mm;
+        min-height: 210mm;
+        align-items: start;
+        overflow: hidden;
+        page-break-after: always;
+        break-after: page;
+        border: 0;
+        padding: 14mm 17mm 12mm;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+      }
+      .slide:last-child { page-break-after: auto; break-after: auto; }
+      .slide-inner {
+        width: 121.95%;
+        max-width: none;
+        transform: scale(.82);
+        transform-origin: top left;
+      }
+      h1 { font-size: 52pt; }
+      h2 { font-size: 34pt; }
+      .lede { font-size: 13pt; }
+      .cover .slide-inner { grid-template-columns: 1.24fr .76fr; }
+      .split-lean-left { grid-template-columns: .86fr 1.14fr; }
+      .split-lean-right { grid-template-columns: 1.15fr .85fr; }
+      .grid-2 { grid-template-columns: repeat(2, 1fr); }
+      .grid-3, .decision-grid { grid-template-columns: repeat(3, 1fr); }
+      .grid-4 { grid-template-columns: repeat(4, 1fr); }
+      .timeline { grid-template-columns: repeat(5, 1fr); overflow: hidden; }
+      .slide-footer { bottom: -7mm; }
+      a { color: inherit; text-decoration: none; }
+    }
+  </style>
+</head>
+<body>
+  <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+    <symbol id="leaf-art" viewBox="0 0 520 620">
+      <g fill="none" stroke="currentColor" stroke-width="1.4">
+        <path d="M290 612C305 506 310 404 286 316C266 244 219 202 169 154"/>
+        <path d="M287 314C360 259 392 189 403 99"/>
+        <path d="M255 250C220 235 189 198 179 158C214 169 247 198 255 250Z"/>
+        <path d="M303 285C347 279 385 247 402 203C357 207 322 234 303 285Z"/>
+        <path d="M298 376C360 347 420 350 469 383C408 410 348 407 298 376Z"/>
+        <path d="M281 434C226 402 174 406 130 440C185 462 235 457 281 434Z"/>
+        <path d="M295 517C344 485 391 484 435 508C391 540 342 543 295 517Z"/>
+        <path d="M402 202C377 159 380 112 404 72C429 118 427 162 402 202Z"/>
+        <path d="M169 154C139 116 137 75 153 36C183 76 189 115 169 154Z"/>
+      </g>
+    </symbol>
+  </svg>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="#opening" aria-label="Go to opening slide">
+        <span class="brand-mark">R</span>
+        <span>The Breathing Room <span class="signal">/</span> Bangkok</span>
+      </a>
+      <nav class="top-actions" aria-label="Deck controls">
+        <a class="top-link" href="index.html" title="Open the underlying revenue report"><span aria-hidden="true">↗</span><span class="label">&nbsp;Source report</span></a>
+        <button class="control" type="button" data-action="previous" title="Previous slide"><span aria-hidden="true">←</span><span class="label">&nbsp;Previous</span></button>
+        <span class="slide-count" aria-live="polite"><span id="currentSlide">01</span> / 10</span>
+        <button class="control primary" type="button" data-action="next" title="Next slide"><span class="label">Next&nbsp;</span><span aria-hidden="true">→</span></button>
+        <button class="control" type="button" data-action="print" title="Print or save as PDF"><span aria-hidden="true">⇩</span><span class="label">&nbsp;Print / PDF</span></button>
+      </nav>
+    </div>
+  </header>
+  <div class="progress" id="progress" aria-hidden="true"></div>
+
+  <nav class="slide-index" aria-label="Slide index">
+    <a class="slide-dot active" href="#opening" aria-label="Slide 1: Opening"></a>
+    <a class="slide-dot" href="#case" aria-label="Slide 2: Why change the offer"></a>
+    <a class="slide-dot" href="#principles" aria-label="Slide 3: Product design principles"></a>
+    <a class="slide-dot" href="#desk-product" aria-label="Slide 4: Desk Reset 40"></a>
+    <a class="slide-dot" href="#desk-experience" aria-label="Slide 5: Desk Reset experience and test"></a>
+    <a class="slide-dot" href="#runner-product" aria-label="Slide 6: Runner Reset 45"></a>
+    <a class="slide-dot" href="#runner-experience" aria-label="Slide 7: Runner Reset experience and test"></a>
+    <a class="slide-dot" href="#comparison" aria-label="Slide 8: Product comparison"></a>
+    <a class="slide-dot" href="#experiment" aria-label="Slide 9: Paid experiment design"></a>
+    <a class="slide-dot" href="#decision" aria-label="Slide 10: Board decision"></a>
+  </nav>
+
+  <main class="deck">
+    <section class="slide cover" id="opening" data-title="Opening">
+      <div class="slide-inner">
+        <div class="brand-rule"></div>
+        <div class="brand-values">Evidence-led &nbsp;•&nbsp; Human &nbsp;•&nbsp; Progressive</div>
+        <div>
+          <p class="eyebrow">Tuesday / Thursday · Morning inventory</p>
+          <h1>PRODUCT<br>BRAINSTORM</h1>
+          <p class="lede">Two standalone products designed to <strong class="accent">finish the customer’s job in one visit.</strong></p>
+          <div class="date-line">Board discussion · 18 August 2026</div>
+        </div>
+        <div class="concept-list" aria-label="Product concepts in this deck">
+          <article class="concept-card">
+            <span class="concept-no">01</span>
+            <span><b>Desk Reset 40</b><small>Focus · Move · Rehearse</small></span>
+          </article>
+          <article class="concept-card">
+            <span class="concept-no">02</span>
+            <span><b>Runner Reset 45</b><small>Observe · Coach · Own</small></span>
+          </article>
+          <p class="fine">Early concepts for debate—not approved products, medical services or demand forecasts.</p>
+        </div>
+        <span class="botanical-ring" aria-hidden="true"></span>
+        <svg class="botanical" aria-hidden="true"><use href="#leaf-art"></use></svg>
+        <footer class="slide-footer"><span>The Breathing Room · Board brainstorm</span><span>01</span></footer>
+      </div>
+    </section>
+
+    <section class="slide" id="case" data-title="Why change the offer">
+      <div class="slide-inner">
+        <p class="eyebrow">The starting problem</p>
+        <h2>Reduce the commitment.<br>Increase the specificity.</h2>
+        <p class="lede">The morning gap is real in the forward booking snapshot. The reason for it is not yet known—so the next offer should buy evidence, not assume loyalty.</p>
+
+        <div class="grid-4 top-space">
+          <article class="metric"><strong>0 / 78</strong><p>Advance bookings across six captured Tuesday/Thursday morning occurrences.<sup><a href="index.html#availability">A</a></sup></p></article>
+          <article class="metric"><strong>14 / 195</strong><p>Advance bookings across the wider captured weekday-morning inventory: 7.2% occupancy.<sup><a href="index.html#availability">A</a></sup></p></article>
+          <article class="metric"><strong>฿388–688</strong><p>Current Bangkok first-timer single-class examples make generic movement easy to compare on price.<sup><a href="https://www.anantayogabangkok.com/pricing-plans/list" target="_blank" rel="noreferrer">1</a></sup></p></article>
+          <article class="metric signal-card"><strong>1 visit</strong><p>Proposed commitment: one clear outcome, one payment, one finished experience. This is a testable strategy.</p></article>
+        </div>
+
+        <div class="grid-2 top-space">
+          <aside class="thesis">
+            <small>Product thesis</small>
+            <blockquote>Do not sell “a class.” Sell a small job the customer can complete.</blockquote>
+          </aside>
+          <div>
+            <div class="legend" aria-label="Evidence labels">
+              <span class="pill">Verified signal</span>
+              <span class="pill hypothesis">Test hypothesis</span>
+              <span class="pill unknown">Internal data needed</span>
+            </div>
+            <p class="boundary"><strong>Evidence boundary:</strong> Rezerv availability is advance-booking evidence, not attendance. Low-cost competitor offers show comparison pressure, not why The Breathing Room customers do or do not buy.</p>
+          </div>
+        </div>
+        <footer class="slide-footer"><span>Context before concepts</span><span>02</span></footer>
+      </div>
+    </section>
+
+    <section class="slide" id="principles" data-title="Product design principles">
+      <div class="slide-inner">
+        <p class="eyebrow">What both concepts must do</p>
+        <h2>A one-off can still create<br>lasting value.</h2>
+        <p class="lede">The visit ends. The customer leaves with something usable. No renewal is required for the first purchase to feel complete.</p>
+
+        <div class="grid-3 top-space">
+          <article class="principle"><small>01 · Named job</small><h3>Lead with the situation</h3><p>“My desk day leaves me stiff” or “I do not know what to do around a run”—not a modality menu.</p></article>
+          <article class="principle"><small>02 · Owned routine</small><h3>Rehearse without the coach</h3><p>The participant repeats a short sequence independently before leaving, then keeps a simple routine card.</p></article>
+          <article class="principle"><small>03 · Paid proof</small><h3>Validate behavior, not interest</h3><p>Use full conditional payment for one exact date. A poll or refundable reservation is weaker evidence.</p></article>
+        </div>
+
+        <div class="split-lean-right top-space">
+          <aside class="thesis">
+            <small>The anti-membership promise</small>
+            <blockquote>“Useful even if this is the only visit you ever make.”</blockquote>
+          </aside>
+          <div class="anti-list">
+            <div class="anti-item"><span class="anti-mark">×</span><span><b>No vague wellness claim</b>Define the take-home outcome before choosing exercises.</span></div>
+            <div class="anti-item"><span class="anti-mark">×</span><span><b>No treatment language</b>Refer pain, recent injury, surgery and concerning symptoms.</span></div>
+            <div class="anti-item"><span class="anti-mark">×</span><span><b>No hidden commitment</b>A future class may be offered, but it is not needed to complete this product.</span></div>
+          </div>
+        </div>
+        <footer class="slide-footer"><span>Shared product rules</span><span>03</span></footer>
+      </div>
+    </section>
+
+    <section class="slide" id="desk-product" data-title="Desk Reset 40">
+      <div class="slide-inner">
+        <p class="slide-number">01 /</p>
+        <div class="product-heading">
+          <div>
+            <h2>Desk Reset 40</h2>
+            <p class="product-promise">Leave with a five-minute movement break built for your desk day.</p>
+          </div>
+          <aside class="product-tag"><small>Product type</small><b>One-off clinic</b></aside>
+        </div>
+
+        <div class="fact-row" aria-label="Desk Reset product facts">
+          <span class="fact"><b>40 min</b> total</span>
+          <span class="fact"><b>Max 8</b> people</span>
+          <span class="fact"><b>฿590</b> test price</span>
+          <span class="fact"><b>Tue 07:30</b> candidate</span>
+        </div>
+
+        <div class="split-lean-right top-space">
+          <div>
+            <p class="eyebrow">Who buys the job</p>
+            <h3>Desk-based workers near P23—and current clients whose workday is screen-heavy.</h3>
+            <p class="lede" style="font-size:clamp(15px,1.35vw,19px)">The paid difference is not “more stretching.” It is a desk-compatible routine, taught with individual observation, then rehearsed until the customer can use it alone.</p>
+            <div class="grid-3 top-space">
+              <article class="evidence-panel"><h3>Customer owns</h3><p class="fine">A five-minute routine card, two personal movement cues and a clear time-of-day anchor.</p></article>
+              <article class="evidence-panel"><h3>It is not</h3><p class="fine">A cure for “office syndrome,” ergonomic assessment, physiotherapy or recurring class commitment.</p></article>
+              <article class="evidence-panel"><h3>Reach first</h3><p class="fine">P23 tenants and teams, building channels, then current clients—not a broad paid campaign.</p></article>
+            </div>
+          </div>
+          <aside class="evidence-panel">
+            <h3>Market signals—not demand proof</h3>
+            <ul>
+              <li><b>37.9%</b> seven-day musculoskeletal-disorder prevalence in a 545-person Thai office-worker study; neck, shoulders and back were the most common complaint areas.<sup><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9356480/" target="_blank" rel="noreferrer">2</a></sup></li>
+              <li><b>Frequent position change</b> from sitting to standing or walking was associated with lower risk. That supports an active-break behavior—not claims that this clinic prevents or treats a disorder.<sup><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9356480/" target="_blank" rel="noreferrer">2</a></sup></li>
+              <li><b>Category familiarity:</b> a Bangkok corporate provider currently lists Desk &amp; Chair Yoga for 30 participants at ฿7,250.<sup><a href="https://mytheras.com/corporate-wellness/workshops/" target="_blank" rel="noreferrer">3</a></sup></li>
+              <li><b>Venue adjacency:</b> P23 presents itself around productivity, wellbeing and boutique wellness experiences. This indicates context, not purchase intent.<sup><a href="https://www.p23building.com/p23-playful-space" target="_blank" rel="noreferrer">4</a></sup></li>
+            </ul>
+          </aside>
+        </div>
+        <footer class="slide-footer"><span>Concept 01 · Desk Reset 40</span><span>04</span></footer>
+      </div>
+    </section>
+
+    <section class="slide" id="desk-experience" data-title="Desk Reset experience and test">
+      <div class="slide-inner">
+        <p class="eyebrow">Desk Reset 40 · Product anatomy</p>
+        <h2>Teach it. Rehearse it.<br>Hand it over.</h2>
+
+        <div class="timeline" aria-label="Forty-minute Desk Reset session flow">
+          <article class="timeline-step"><small>05 min</small><b>Scope</b><p>Ask about the workday and screen pattern; identify red flags for referral.</p></article>
+          <article class="timeline-step"><small>05 min</small><b>Observe</b><p>Try simple desk-position movements and choose two useful coaching cues.</p></article>
+          <article class="timeline-step"><small>20 min</small><b>Coach</b><p>Teach a compact standing/chair sequence with options—not a maximal workout.</p></article>
+          <article class="timeline-step"><small>07 min</small><b>Rehearse</b><p>Participant performs the five-minute routine with minimal prompting.</p></article>
+          <article class="timeline-step"><small>03 min</small><b>Own</b><p>Write the two cues and attach the routine to one real workday moment.</p></article>
+        </div>
+
+        <div class="grid-3 top-space">
+          <article class="deliverable"><small>Tangible close</small><h3>The 5-Minute Desk Reset</h3><p>One simple card: sequence, two personal cues, when to use it, and when to stop and seek appropriate help.</p></article>
+          <article class="test-card"><small>Presale rule</small><h3>One exact Tuesday</h3><p>Sell the actual date with full conditional payment. Refund automatically if the launch gate is missed.</p><strong class="gate">Gate = max(6, break-even + 2)</strong></article>
+          <article class="evidence-panel"><h3>Board challenge</h3><p class="lede" style="font-size:18px">Can P23 or an employer channel put this in front of a reachable desk-worker list—without discounting?</p><p class="boundary"><strong>Stop after two attempts</strong> if the same offer and slot cannot reach the paid gate.</p></article>
+        </div>
+        <footer class="slide-footer"><span>Concept 01 · Delivery and validation</span><span>05</span></footer>
+      </div>
+    </section>
+
+    <section class="slide" id="runner-product" data-title="Runner Reset 45">
+      <div class="slide-inner">
+        <p class="slide-number">02 /</p>
+        <div class="product-heading">
+          <div>
+            <h2>Runner Reset 45</h2>
+            <p class="product-promise">Leave able to perform one short routine at the right point around your run.</p>
+          </div>
+          <aside class="product-tag"><small>Product type</small><b>One-off clinic</b></aside>
+        </div>
+
+        <div class="fact-row" aria-label="Runner Reset product facts">
+          <span class="fact"><b>45 min</b> total</span>
+          <span class="fact"><b>Max 8</b> runners</span>
+          <span class="fact"><b>฿690</b> test price</span>
+          <span class="fact"><b>Thu 07:30</b> candidate</span>
+        </div>
+
+        <div class="split-lean-left top-space">
+          <aside>
+            <p class="eyebrow">One date · one job</p>
+            <div class="edition-choice">
+              <article class="edition recommended"><small>Edition A</small><b>READY</b><p>A dynamic 8–10 minute sequence for before a run. Avoid long passive holds when immediate performance is the goal.<sup><a href="index.html#programming">B</a></sup></p></article>
+              <article class="edition"><small>Edition B</small><b>RESTORE</b><p>Controlled mobility and optional foam rolling for after a run or a non-running day. No recovery guarantee.<sup><a href="index.html#programming">B</a></sup></p></article>
+            </div>
+            <p class="boundary"><strong>Important:</strong> choose READY or RESTORE before sale. Trying to teach both in 45 minutes weakens the promised take-home result.</p>
+          </aside>
+          <div>
+            <p class="eyebrow">Why someone pays</p>
+            <h3>Free running groups and online routines already exist. The product must add observation, correction and confident independent rehearsal.</h3>
+            <div class="grid-3 top-space">
+              <article class="evidence-panel"><h3>Customer owns</h3><p class="fine">One 8–10 minute routine card plus two personal cues they have already practiced.</p></article>
+              <article class="evidence-panel"><h3>It is for</h3><p class="fine">Healthy recreational runners. Current pain, recent injury or post-surgery return-to-run is referred.</p></article>
+              <article class="evidence-panel"><h3>Reach first</h3><p class="fine">Past run-event contacts with consent, current clients who run, then one partner club via one tracked link.</p></article>
+            </div>
+          </div>
+        </div>
+        <footer class="slide-footer"><span>Concept 02 · Runner Reset 45</span><span>06</span></footer>
+      </div>
+    </section>
+
+    <section class="slide" id="runner-experience" data-title="Runner Reset experience and test">
+      <div class="slide-inner">
+        <p class="eyebrow">Runner Reset 45 · Product anatomy</p>
+        <h2>Specific coaching must<br>beat free stretching.</h2>
+
+        <div class="timeline" aria-label="Forty-five-minute Runner Reset session flow">
+          <article class="timeline-step"><small>05 min</small><b>Eligibility</b><p>Confirm the edition, running context and scope; refer pain or recent injury.</p></article>
+          <article class="timeline-step"><small>07 min</small><b>Observe</b><p>Use simple movement tasks to select two relevant coaching cues.</p></article>
+          <article class="timeline-step"><small>20 min</small><b>Coach</b><p>Teach the chosen READY or RESTORE sequence with clear options.</p></article>
+          <article class="timeline-step"><small>10 min</small><b>Rehearse</b><p>Runner completes the routine uninterrupted; coach corrects only what matters.</p></article>
+          <article class="timeline-step"><small>03 min</small><b>Own</b><p>Record two cues and define exactly when the routine belongs around the run.</p></article>
+        </div>
+
+        <div class="grid-3 top-space">
+          <article class="evidence-panel"><h3>Paid category exists</h3><p class="fine">YogaSutra currently lists a 60-minute Mobility for Runners service at ฿800—but with zero ratings at capture. This is a price/category signal, not volume proof.<sup><a href="https://www.gowabi.com/en/organization_services/mobility-for-runners-all-levels" target="_blank" rel="noreferrer">5</a></sup></p></article>
+          <article class="evidence-panel"><h3>Free substitutes are strong</h3><p class="fine">Bangkok’s published weekly calendar includes group runs across several neighborhoods, including Benjakitti. A paid clinic needs a sharper job than community running.<sup><a href="https://www.runclubbangkok.com/en/weekly-club-calendar" target="_blank" rel="noreferrer">6</a></sup></p></article>
+          <article class="evidence-panel"><h3>The studio has a warm start</h3><p class="fine">The Breathing Room hosted a 2.7 km City Run + Mini Pilates event at P23 on 2 August. Audit consent, attendance and follow-on purchase before outreach.<sup><a href="https://thestandard.co/life/life-this-week-29-4-aug-2026/" target="_blank" rel="noreferrer">7</a></sup></p></article>
+        </div>
+        <p class="boundary"><strong>Claims guardrail:</strong> say “dynamic pre-run activation,” “mobility practice” and “optional rolling for range or recovery perception.” Do not promise faster running, injury prevention, treatment or recovery.<sup><a href="index.html#programming">B</a></sup></p>
+        <footer class="slide-footer"><span>Concept 02 · Delivery and validation</span><span>07</span></footer>
+      </div>
+    </section>
+
+    <section class="slide" id="comparison" data-title="Product comparison">
+      <div class="slide-inner">
+        <p class="eyebrow">Side-by-side</p>
+        <h2>Two credible ideas.<br>Different proof problems.</h2>
+        <p class="lede">The best first test is not automatically the bigger audience. It is the product with the strongest reachable buyer channel today.</p>
+
+        <div class="top-space">
+          <table class="compare">
+            <thead><tr><th>Decision lens</th><th>01 · Desk Reset 40</th><th>02 · Runner Reset 45</th></tr></thead>
+            <tbody>
+              <tr><td>Buyer</td><td><b>Broader everyday need</b><br>Desk-based workers near P23.</td><td><b>Narrower self-identified niche</b><br>Healthy recreational runners.</td></tr>
+              <tr><td>Completed job</td><td>Own a five-minute desk-compatible movement break.</td><td>Own one 8–10 minute READY or RESTORE routine.</td></tr>
+              <tr><td>Test hypothesis</td><td>40 min · max 8 · ฿590 · Tuesday 07:30.</td><td>45 min · max 8 · ฿690 · Thursday 07:30.</td></tr>
+              <tr><td>Best first channel</td><td>P23 tenant/team distribution or an employer partner.</td><td>Past event contacts, current runners, one local club partner.</td></tr>
+              <tr><td>Paid difference</td><td>Individual cues + a routine adapted to the workday.</td><td>Sport timing + individual cues + independent rehearsal.</td></tr>
+              <tr><td>Main risk</td><td>The problem is crowded and medicalized; broad relevance may not translate to a 07:30 journey.</td><td>Free community/content substitutes are strong; the audience is smaller.</td></tr>
+              <tr><td>Fastest unknown to answer</td><td>Can a building/employer channel deliver six paid buyers?</td><td>Can the warm runner list and one partner deliver six paid buyers?</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="board-read"><strong>Board read:</strong> Desk Reset has more potential buyers but weaker direct access evidence. Runner Reset has a more specific buyer and an existing studio adjacency, but must clearly outperform free alternatives.</p>
+        <footer class="slide-footer"><span>Portfolio comparison</span><span>08</span></footer>
+      </div>
+    </section>
+
+    <section class="slide" id="experiment" data-title="Paid experiment design">
+      <div class="slide-inner">
+        <p class="eyebrow">How to buy an answer cheaply</p>
+        <h2>Test one product first.<br>Hold the offer still.</h2>
+
+        <div class="split-lean-left top-space">
+          <aside class="formula">
+            <small>Economics before marketing</small>
+            <code>Break-even seats = ceil((instructor + room/settlement + launch cost) ÷ (price − variable cost per person))</code>
+            <p>Paid launch gate = max(6, break-even seats + 2), with a hard capacity of 8. If the gate is above 8, the economics fail at this price.</p>
+          </aside>
+          <div>
+            <div class="steps">
+              <article class="step"><span class="step-no">1</span><span><b>Choose by channel strength</b><p>Desk first only with committed P23/employer distribution. Runner first only with a usable warm list or partner.</p></span></article>
+              <article class="step"><span class="step-no">2</span><span><b>Sell one exact date</b><p>One promise, one slot, one price, full conditional payment, automatic refund if the gate is missed.</p></span></article>
+              <article class="step"><span class="step-no">3</span><span><b>Keep the variables stable</b><p>Do not change product, price and time together. A failed mixed test explains nothing.</p></span></article>
+              <article class="step"><span class="step-no">4</span><span><b>Score the whole visit</b><p>Paid seats, contribution, attendance, scope-fit inquiries, and whether participants can reproduce the routine.</p></span></article>
+            </div>
+            <p class="stop-rule"><strong>Stop rule:</strong> after two comparable presale attempts below the gate, close the hypothesis. Do not rescue it with a last-minute discount or a recurring package.</p>
+          </div>
+        </div>
+        <footer class="slide-footer"><span>Experiment design</span><span>09</span></footer>
+      </div>
+    </section>
+
+    <section class="slide" id="decision" data-title="Board decision">
+      <div class="slide-inner">
+        <p class="eyebrow">Decision requested</p>
+        <h2>Choose the reachable buyer—<br>or choose not to launch.</h2>
+
+        <div class="decision-grid top-space">
+          <article class="decision-card"><small>If building access is real</small><h3>Test Desk Reset first</h3><p>Require a named P23 or employer channel, a distribution commitment and six paid buyers—not general enthusiasm.</p></article>
+          <article class="decision-card"><small>If the warm runner route is real</small><h3>Test Runner Reset first</h3><p>Reactivate consented event contacts and one partner through one tracked link. Choose READY or RESTORE before sale.</p></article>
+          <article class="decision-card"><small>If neither channel is real</small><h3>Do not fill the slot yet</h3><p>Close or repurpose the empty inventory while gathering buyer evidence. A new name does not solve inaccessible demand.</p></article>
+        </div>
+
+        <div class="split-lean-right top-space">
+          <div>
+            <p class="eyebrow">Six questions for the room</p>
+            <ol class="questions">
+              <li>Which legally usable buyer list can we reach this week?</li>
+              <li>What is the true instructor, room/settlement and variable cost?</li>
+              <li>Which exact Tuesday or Thursday date can operations support?</li>
+              <li>Does ฿590 / ฿690 fit current package and channel rules?</li>
+              <li>Who owns presale, refunds, screening and follow-up?</li>
+              <li>What evidence will make us stop after attempt two?</li>
+            </ol>
+          </div>
+          <aside class="thesis">
+            <small>Recommendation for discussion</small>
+            <blockquote>Authorize one paid test—not two launches.</blockquote>
+            <p>The second concept remains on the shelf until the first experiment produces a clean learning.</p>
+          </aside>
+        </div>
+
+        <div class="source-strip">
+          <b>Evidence trail</b>
+          <p><strong>A</strong> <a href="index.html#availability">The Breathing Room forward availability analysis</a> · <strong>B</strong> <a href="index.html#programming">Runner programming evidence and claims guide</a> · <strong>1</strong> <a href="https://www.anantayogabangkok.com/pricing-plans/list" target="_blank" rel="noreferrer">Ananta Yoga Bangkok pricing</a> · <strong>2</strong> <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9356480/" target="_blank" rel="noreferrer">Thai office-worker study</a> · <strong>3</strong> <a href="https://mytheras.com/corporate-wellness/workshops/" target="_blank" rel="noreferrer">myTHERAS workshops</a> · <strong>4</strong> <a href="https://www.p23building.com/p23-playful-space" target="_blank" rel="noreferrer">P23 Playful Space</a> · <strong>5</strong> <a href="https://www.gowabi.com/en/organization_services/mobility-for-runners-all-levels" target="_blank" rel="noreferrer">YogaSutra runner mobility listing</a> · <strong>6</strong> <a href="https://www.runclubbangkok.com/en/weekly-club-calendar" target="_blank" rel="noreferrer">Run Club Bangkok calendar</a> · <strong>7</strong> <a href="https://thestandard.co/life/life-this-week-29-4-aug-2026/" target="_blank" rel="noreferrer">2 August TBR event listing</a>. Public facts checked 18 August 2026. Prices, times, capacity, launch gate and product designs are proposals to test.</p>
+        </div>
+        <footer class="slide-footer"><span>The Breathing Room · Morning product brainstorm</span><span>10</span></footer>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const dots = Array.from(document.querySelectorAll(".slide-dot"));
+      const current = document.getElementById("currentSlide");
+      const progress = document.getElementById("progress");
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+      let activeIndex = 0;
+      let observerReady = false;
+
+      const pad = value => String(value).padStart(2, "0");
+      const clamp = value => Math.max(0, Math.min(slides.length - 1, value));
+
+      function setActive(index, updateHash) {
+        activeIndex = clamp(index);
+        current.textContent = pad(activeIndex + 1);
+        progress.style.width = ((activeIndex + 1) / slides.length * 100) + "%";
+        dots.forEach((dot, dotIndex) => dot.classList.toggle("active", dotIndex === activeIndex));
+        document.title = slides[activeIndex].dataset.title + " — The Breathing Room";
+        if (updateHash && location.hash !== "#" + slides[activeIndex].id) {
+          history.replaceState(null, "", "#" + slides[activeIndex].id);
+        }
+      }
+
+      function goTo(index) {
+        const target = clamp(index);
+        setActive(target, true);
+        slides[target].scrollIntoView({ behavior: reduceMotion.matches ? "auto" : "smooth", block: "start" });
+      }
+
+      document.querySelector('[data-action="previous"]').addEventListener("click", () => goTo(activeIndex - 1));
+      document.querySelector('[data-action="next"]').addEventListener("click", () => goTo(activeIndex + 1));
+      document.querySelector('[data-action="print"]').addEventListener("click", () => window.print());
+
+      window.addEventListener("keydown", event => {
+        if (event.metaKey || event.ctrlKey || event.altKey) return;
+        const tag = document.activeElement && document.activeElement.tagName;
+        if (["INPUT", "TEXTAREA", "SELECT"].includes(tag)) return;
+        if (["ArrowRight", "ArrowDown", "PageDown"].includes(event.key) || (event.key === " " && !event.shiftKey)) {
+          event.preventDefault();
+          goTo(activeIndex + 1);
+        } else if (["ArrowLeft", "ArrowUp", "PageUp"].includes(event.key) || (event.key === " " && event.shiftKey)) {
+          event.preventDefault();
+          goTo(activeIndex - 1);
+        } else if (event.key === "Home") {
+          event.preventDefault();
+          goTo(0);
+        } else if (event.key === "End") {
+          event.preventDefault();
+          goTo(slides.length - 1);
+        }
+      });
+
+      const observer = new IntersectionObserver(entries => {
+        if (!observerReady) return;
+        const visible = entries
+          .filter(entry => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (!visible) return;
+        setActive(slides.indexOf(visible.target), true);
+      }, { threshold: [.35, .55, .75] });
+      slides.forEach(slide => observer.observe(slide));
+
+      function openHash() {
+        const targetIndex = slides.findIndex(slide => "#" + slide.id === location.hash);
+        if (targetIndex >= 0) {
+          setActive(targetIndex, false);
+          requestAnimationFrame(() => {
+            const root = document.documentElement;
+            const previousBehavior = root.style.scrollBehavior;
+            root.style.scrollBehavior = "auto";
+            slides[targetIndex].scrollIntoView({ block: "start" });
+            root.style.scrollBehavior = previousBehavior;
+          });
+        } else {
+          setActive(0, false);
+        }
+      }
+
+      window.addEventListener("hashchange", openHash);
+      openHash();
+      window.setTimeout(() => { observerReady = true; }, 120);
+    }());
+  </script>
+</body>
+</html>
