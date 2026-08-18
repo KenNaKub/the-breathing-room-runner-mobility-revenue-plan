@@ -1,0 +1,851 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="An evidence-led analysis of current morning performance, Bangkok's reachable runner market and a Runner Mobility Lab revenue pilot for The Breathing Room.">
+  <title>Morning Revenue Recovery — Runner Mobility Lab</title>
+  <style>
+    :root {
+      --paper: #f5f3ed;
+      --paper-2: #fffdf8;
+      --ink: #15251f;
+      --muted: #5f6b65;
+      --line: #d7d8cf;
+      --forest: #173f36;
+      --forest-2: #2d6457;
+      --mint: #dfeae5;
+      --signal: #e86e4a;
+      --signal-soft: #f8e3da;
+      --lime: #dce982;
+      --lime-soft: #f0f4cf;
+      --sky: #e5edf1;
+      --warning: #f3e5bf;
+      --shadow: 0 20px 60px rgba(23, 63, 54, .12);
+      --radius: 22px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 88% 5%, rgba(220,233,130,.28), transparent 22rem),
+        var(--paper);
+      font-family: "Avenir Next", Avenir, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--forest-2); text-decoration-color: rgba(45,100,87,.38); text-underline-offset: 3px; }
+    a:hover { color: var(--signal); }
+    .shell { width: min(1180px, calc(100% - 36px)); margin: 0 auto; }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid rgba(215,216,207,.9);
+      background: rgba(245,243,237,.92);
+      backdrop-filter: blur(14px);
+    }
+    .topbar .shell { min-height: 62px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .brand { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 780; letter-spacing: -.01em; }
+    .brand-mark { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; background: var(--forest); color: var(--lime); font-family: Georgia, serif; font-weight: 700; }
+    .top-actions { display: flex; align-items: center; gap: 14px; }
+    .top-actions a { color: var(--muted); font-size: 12px; font-weight: 650; text-decoration: none; }
+    button {
+      appearance: none;
+      border: 0;
+      border-radius: 999px;
+      padding: 10px 16px;
+      background: var(--forest);
+      color: white;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 750;
+      cursor: pointer;
+    }
+    button:hover { background: var(--signal); }
+    .hero { padding: 74px 0 58px; }
+    .eyebrow { margin: 0 0 14px; color: var(--signal); font-size: 12px; font-weight: 850; letter-spacing: .14em; text-transform: uppercase; }
+    h1, h2, h3 { margin-top: 0; font-family: Georgia, "Times New Roman", serif; line-height: 1.1; letter-spacing: -.026em; }
+    h1 { margin-bottom: 22px; font-size: clamp(58px, 9vw, 112px); font-weight: 600; }
+    h2 { margin-bottom: 14px; font-size: clamp(32px, 4.5vw, 51px); font-weight: 600; }
+    h3 { margin-bottom: 9px; font-size: 23px; font-weight: 600; }
+    .hero-grid { display: grid; grid-template-columns: 1.25fr .75fr; gap: 34px; align-items: end; }
+    .hero-copy { max-width: 760px; margin: 0; color: var(--muted); font-size: 20px; }
+    .slash { color: var(--signal); }
+    .hero-card { padding: 28px; border-radius: var(--radius); background: var(--forest); color: white; box-shadow: var(--shadow); }
+    .hero-card .label { color: var(--lime); font-size: 11px; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
+    .hero-card strong { display: block; margin: 9px 0 7px; font-family: Georgia, serif; font-size: 30px; line-height: 1.16; }
+    .hero-card p { margin: 0; color: #dbe8e3; font-size: 14px; }
+    .legend { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; }
+    .pill { display: inline-flex; align-items: center; gap: 7px; padding: 7px 11px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,.5); color: var(--muted); font-size: 12px; font-weight: 750; }
+    .pill::before { width: 8px; height: 8px; border-radius: 50%; background: var(--forest-2); content: ""; }
+    .pill.hypothesis::before { background: var(--signal); }
+    .pill.unknown::before { background: #d3a645; }
+    .date-line { margin-top: 16px; color: var(--muted); font-size: 12px; }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 43px; }
+    .stat { min-height: 148px; padding: 22px; border: 1px solid var(--line); border-radius: 18px; background: var(--paper-2); }
+    .stat b { display: block; margin-bottom: 8px; color: var(--forest); font-family: Georgia, serif; font-size: 38px; font-weight: 600; line-height: 1; }
+    .stat span { color: var(--muted); font-size: 13px; }
+    main { padding-bottom: 72px; }
+    section { padding: 68px 0; border-top: 1px solid var(--line); }
+    .section-head { display: grid; grid-template-columns: .34fr 1fr; gap: 25px; margin-bottom: 32px; }
+    .section-no { padding-top: 8px; color: var(--signal); font-size: 11px; font-weight: 850; letter-spacing: .14em; text-transform: uppercase; }
+    .section-intro { max-width: 820px; margin: 0; color: var(--muted); font-size: 18px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .panel { padding: 28px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper-2); }
+    .panel.dark { border-color: var(--forest); background: var(--forest); color: white; }
+    .panel.dark p, .panel.dark li { color: #d9e6e1; }
+    .panel.signal { border-color: #e7b6a6; background: var(--signal-soft); }
+    .panel.lime { border-color: #d8df91; background: var(--lime-soft); }
+    .tight { margin: 0; }
+    .big-quote { margin: 0; font-family: Georgia, serif; font-size: clamp(28px, 4vw, 44px); line-height: 1.18; letter-spacing: -.02em; }
+    ul.clean, ol.clean { margin: 14px 0 0; padding-left: 20px; }
+    ul.clean li, ol.clean li { margin: 8px 0; }
+    .badge { display: inline-block; margin-bottom: 13px; padding: 5px 10px; border-radius: 999px; background: var(--mint); color: var(--forest); font-size: 10px; font-weight: 850; letter-spacing: .1em; text-transform: uppercase; }
+    .badge.hypothesis { background: var(--signal-soft); color: #7d3d29; }
+    .badge.unknown { background: var(--warning); color: #6f551c; }
+    .evidence-card { padding: 23px; border: 1px solid var(--line); border-radius: 18px; background: var(--paper-2); }
+    .evidence-card p { margin: 0; color: var(--muted); font-size: 14px; }
+    .note { margin-top: 16px; padding: 15px 18px; border-left: 4px solid var(--signal); background: var(--signal-soft); color: #613626; font-size: 13px; }
+    .ref { display: inline-grid; min-width: 17px; height: 17px; margin-left: 2px; border-radius: 50%; place-items: center; vertical-align: super; background: var(--mint); color: var(--forest); font-size: 9px; font-weight: 900; line-height: 1; text-decoration: none; }
+    .product-stack { display: grid; gap: 18px; }
+    .product { display: grid; grid-template-columns: .42fr 1fr; gap: 28px; padding: 30px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper-2); }
+    .product.primary { border-color: var(--forest-2); box-shadow: var(--shadow); }
+    .product-kicker { color: var(--signal); font-size: 10px; font-weight: 850; letter-spacing: .13em; text-transform: uppercase; }
+    .product-price { margin: 13px 0 0; color: var(--forest); font-family: Georgia, serif; font-size: 34px; line-height: 1; }
+    .product-price span { display: block; margin-top: 8px; color: var(--muted); font-family: "Avenir Next", Avenir, sans-serif; font-size: 12px; }
+    .product ul { margin: 0; padding-left: 18px; }
+    .product li { margin: 7px 0; color: var(--muted); }
+    .protocols { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .protocol { overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper-2); }
+    .protocol-head { padding: 25px; background: var(--forest); color: white; }
+    .protocol:nth-child(2) .protocol-head { background: var(--signal); }
+    .protocol-head small { display: block; margin-bottom: 5px; color: var(--lime); font-size: 10px; font-weight: 850; letter-spacing: .11em; text-transform: uppercase; }
+    .protocol:nth-child(2) .protocol-head small { color: #fff3ec; }
+    .protocol-head h3 { margin: 0; font-size: 30px; }
+    .protocol-head p { margin: 8px 0 0; color: #e1ebe7; font-size: 13px; }
+    .protocol:nth-child(2) .protocol-head p { color: #fff2ed; }
+    .protocol ol { margin: 0; padding: 22px 26px 24px 47px; }
+    .protocol li { margin: 9px 0; padding-left: 3px; color: var(--muted); font-size: 14px; }
+    .claim-table { overflow-x: auto; margin-top: 18px; border: 1px solid var(--line); border-radius: 18px; background: var(--paper-2); }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { padding: 14px 16px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    th { background: #efeee8; color: var(--muted); font-size: 10px; font-weight: 850; letter-spacing: .09em; text-transform: uppercase; }
+    tr:last-child td { border-bottom: 0; }
+    td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+    tr.candidate td { background: var(--signal-soft); }
+    .decision-tag { display: inline-block; padding: 4px 9px; border-radius: 999px; background: var(--signal); color: white; font-size: 10px; font-weight: 850; letter-spacing: .07em; text-transform: uppercase; white-space: nowrap; }
+    .availability-callout { display: grid; grid-template-columns: .42fr 1fr; gap: 28px; align-items: center; margin-bottom: 18px; padding: 28px; border-radius: var(--radius); background: var(--forest); color: white; }
+    .availability-callout strong { color: var(--lime); font-family: Georgia, serif; font-size: clamp(46px, 7vw, 82px); font-weight: 600; line-height: .9; }
+    .availability-callout b { display: block; margin-bottom: 5px; font-family: Georgia, serif; font-size: 26px; }
+    .availability-callout p { margin: 0; color: #d9e6e1; }
+    .analysis-board { display: grid; grid-template-columns: .72fr 1.28fr; gap: 18px; margin-bottom: 18px; }
+    .performance-score { display: flex; min-height: 284px; flex-direction: column; justify-content: space-between; padding: 30px; border-radius: var(--radius); background: var(--forest); color: white; }
+    .performance-score small { color: var(--lime); font-size: 10px; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
+    .performance-score strong { display: block; margin: 14px 0 8px; font-family: Georgia, serif; font-size: clamp(58px, 8vw, 92px); font-weight: 600; line-height: .86; }
+    .performance-score p { margin: 0; color: #d9e6e1; font-size: 14px; }
+    .performance-score footer { margin-top: 25px; padding: 18px 0 0; border-top: 1px solid rgba(255,255,255,.18); color: #b9d1c8; font-size: 12px; }
+    .bar-card { padding: 28px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper-2); }
+    .bar-card h3 { margin-bottom: 4px; }
+    .bar-card > p { margin: 0 0 23px; color: var(--muted); font-size: 12px; }
+    .bar-row { display: grid; grid-template-columns: 155px 1fr 72px; gap: 12px; align-items: center; margin: 15px 0; }
+    .bar-label { color: var(--muted); font-size: 12px; font-weight: 720; }
+    .bar-track { height: 12px; overflow: hidden; border-radius: 999px; background: #e8e8e1; }
+    .bar-fill { min-width: 3px; height: 100%; border-radius: inherit; background: var(--forest-2); }
+    .bar-fill.zero { min-width: 0; background: var(--signal); }
+    .bar-fill.signal { background: var(--signal); }
+    .bar-fill.lime { background: #aebc43; }
+    .bar-value { color: var(--ink); font-size: 12px; font-weight: 850; text-align: right; font-variant-numeric: tabular-nums; }
+    .storyline { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 20px; }
+    .story-node { position: relative; min-height: 156px; padding: 19px; border: 1px solid var(--line); border-radius: 17px; background: var(--paper-2); }
+    .story-node:not(:last-child)::after { position: absolute; z-index: 2; top: 26px; right: -9px; width: 18px; height: 18px; border-radius: 50%; display: grid; place-items: center; content: "›"; background: var(--signal); color: white; font-weight: 900; }
+    .story-node small { color: var(--signal); font-size: 9px; font-weight: 850; letter-spacing: .09em; text-transform: uppercase; }
+    .story-node b { display: block; margin: 7px 0 5px; color: var(--forest); font-family: Georgia, serif; font-size: 18px; line-height: 1.18; }
+    .story-node p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.45; }
+    .market-thesis { display: grid; grid-template-columns: .9fr 1.1fr; gap: 18px; margin-top: 18px; }
+    .market-thesis .big-quote { font-size: clamp(27px, 3.5vw, 40px); }
+    .yes { color: var(--forest-2); font-weight: 750; }
+    .no { color: #9a402c; font-weight: 750; }
+    .positioning { margin-top: 22px; padding: 32px; border-radius: var(--radius); background: var(--forest); color: white; }
+    .positioning small { display: block; margin-bottom: 9px; color: var(--lime); font-size: 10px; font-weight: 850; letter-spacing: .13em; text-transform: uppercase; }
+    .positioning blockquote { margin: 0; max-width: 960px; font-family: Georgia, serif; font-size: clamp(27px, 4vw, 43px); line-height: 1.2; }
+    .market-card { padding: 21px; border: 1px solid var(--line); border-radius: 18px; background: var(--paper-2); }
+    .market-card b { display: block; margin-bottom: 8px; color: var(--forest); font-family: Georgia, serif; font-size: 22px; line-height: 1.14; }
+    .market-card p { margin: 0; color: var(--muted); font-size: 13px; }
+    .journey { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 22px; }
+    .journey-step { position: relative; min-height: 122px; padding: 18px; border-radius: 16px; background: var(--forest); color: white; }
+    .journey-step:not(:last-child)::after { position: absolute; z-index: 2; right: -9px; top: 50%; width: 18px; height: 18px; border-radius: 50%; display: grid; place-items: center; transform: translateY(-50%); content: "›"; background: var(--signal); color: white; font-weight: 900; }
+    .journey-step small { color: var(--lime); font-size: 10px; font-weight: 850; letter-spacing: .08em; text-transform: uppercase; }
+    .journey-step b { display: block; margin-top: 7px; font-size: 13px; line-height: 1.4; }
+    .roadmap { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .phase { padding: 23px; border-top: 4px solid var(--forest-2); border-radius: 4px 4px 17px 17px; background: var(--paper-2); }
+    .phase:nth-child(2) { border-color: #c5cd63; }
+    .phase:nth-child(3) { border-color: var(--signal); }
+    .phase:nth-child(4) { border-color: var(--forest); }
+    .phase small { color: var(--muted); font-size: 10px; font-weight: 850; letter-spacing: .09em; text-transform: uppercase; }
+    .phase h3 { margin: 8px 0 12px; font-size: 22px; }
+    .phase ul { margin: 0; padding-left: 17px; color: var(--muted); font-size: 13px; }
+    .phase li { margin: 7px 0; }
+    .economics { display: grid; grid-template-columns: 1fr .84fr; gap: 18px; align-items: start; }
+    .calculator { padding: 27px; border-radius: var(--radius); background: var(--forest); color: white; }
+    .calculator h3 { font-size: 29px; }
+    .calculator > p { margin-top: -2px; color: #c9dcd5; font-size: 13px; }
+    .inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 21px 0; }
+    label { display: grid; gap: 6px; color: #dce9e4; font-size: 11px; font-weight: 750; }
+    input { width: 100%; border: 1px solid #6e8f84; border-radius: 10px; padding: 11px 12px; background: #f9fbfa; color: var(--ink); font: inherit; font-variant-numeric: tabular-nums; }
+    .calc-results { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .calc-result { padding: 14px; border: 1px solid rgba(255,255,255,.18); border-radius: 13px; background: rgba(255,255,255,.07); }
+    .calc-result small { display: block; color: #b9d1c8; }
+    .calc-result b { display: block; margin-top: 4px; font-family: Georgia, serif; font-size: 23px; font-variant-numeric: tabular-nums; }
+    .fine { margin-top: 13px; color: var(--muted); font-size: 12px; }
+    .calculator .fine { color: #b9d1c8; }
+    .kpis { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .kpi { padding: 17px; border: 1px solid var(--line); border-radius: 14px; background: var(--paper-2); }
+    .kpi b { display: block; color: var(--forest); }
+    .kpi span { color: var(--muted); font-size: 12px; }
+    .script { padding: 27px; border-radius: var(--radius); background: var(--sky); }
+    .script blockquote { margin: 0; font-family: Georgia, serif; font-size: 20px; line-height: 1.5; }
+    .source-list { columns: 2; column-gap: 42px; margin: 0; padding-left: 21px; }
+    .source-list li { break-inside: avoid; margin: 0 0 12px; padding-left: 4px; color: var(--muted); font-size: 13px; }
+    .source-list b { color: var(--ink); }
+    footer { padding: 32px 0 50px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; }
+    .footer-grid { display: flex; justify-content: space-between; gap: 20px; }
+    .no-break { break-inside: avoid; }
+    @media (max-width: 920px) {
+      .hero-grid, .section-head, .product, .economics, .availability-callout, .analysis-board, .market-thesis { grid-template-columns: 1fr; }
+      .grid-4, .stats { grid-template-columns: repeat(2, 1fr); }
+      .grid-3, .roadmap { grid-template-columns: 1fr 1fr; }
+      .journey, .storyline { grid-template-columns: 1fr; }
+      .journey-step:not(:last-child)::after, .story-node:not(:last-child)::after { display: none; }
+    }
+    @media (max-width: 640px) {
+      .shell { width: min(100% - 24px, 1180px); }
+      .top-actions a { display: none; }
+      .hero { padding-top: 49px; }
+      .grid-2, .grid-3, .grid-4, .stats, .protocols, .roadmap, .inputs, .calc-results, .kpis { grid-template-columns: 1fr; }
+      .bar-row { grid-template-columns: 115px 1fr 62px; gap: 8px; }
+      section { padding: 48px 0; }
+      th, td { padding: 11px; }
+    }
+    @page { size: A4; margin: 13mm; }
+    @media print {
+      :root { --paper: #fff; --paper-2: #fff; --shadow: none; }
+      html { scroll-behavior: auto; }
+      body { background: #fff; font-size: 10.2pt; }
+      .shell { width: 100%; }
+      .topbar { display: none; }
+      .hero { padding: 0 0 9mm; }
+      h1 { font-size: 50pt; }
+      h2 { font-size: 25pt; }
+      section { padding: 10mm 0; }
+      .hero-card, .panel.dark, .protocol-head, .positioning, .journey-step, .calculator { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+      .stats, .grid-4, .roadmap { grid-template-columns: repeat(2, 1fr); }
+      .grid-3 { grid-template-columns: repeat(3, 1fr); }
+      .product, .section-head, .economics, .availability-callout { grid-template-columns: .42fr 1fr; }
+      .analysis-board, .market-thesis { grid-template-columns: .72fr 1.28fr; }
+      .protocols, .grid-2 { grid-template-columns: 1fr 1fr; }
+      .journey { grid-template-columns: repeat(5, 1fr); }
+      .source-list { columns: 2; }
+      .panel, .product, .protocol, .evidence-card, .market-card, .phase, .calculator, .claim-table, .performance-score, .bar-card, .story-node { break-inside: avoid; }
+      button { display: none; }
+      a { color: inherit; text-decoration: none; }
+      footer { padding-bottom: 0; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell">
+      <div class="brand"><span class="brand-mark">R</span><span>The Breathing Room · Morning Revenue Recovery</span></div>
+      <nav class="top-actions" aria-label="Report sections">
+        <a href="#availability">Performance</a>
+        <a href="#market-analysis">Market analysis</a>
+        <a href="#product">Product</a>
+        <a href="#launch">Launch</a>
+        <a href="#economics">Economics</a>
+        <button type="button" onclick="window.print()">Print / PDF</button>
+      </nav>
+    </div>
+  </header>
+
+  <header class="hero">
+    <div class="shell">
+      <p class="eyebrow">Current performance → market opportunity → product response</p>
+      <div class="hero-grid">
+        <div>
+          <h1>RUNNER<br>MOBILITY LAB</h1>
+          <p class="hero-copy">An evidence-led revenue recovery story for The Breathing Room: diagnose the weak morning inventory, identify a reachable Bangkok runner niche, then validate one progressive Pilates-based mobility course with paid demand.</p>
+          <div class="legend" aria-label="Evidence legend">
+            <span class="pill">Verified public fact</span>
+            <span class="pill hypothesis">Testable proposal</span>
+            <span class="pill unknown">Needs internal data</span>
+          </div>
+          <div class="date-line">Prepared 18 August 2026 · Public facts checked on the same date</div>
+        </div>
+        <aside class="hero-card">
+          <span class="label">Recommended pilot</span>
+          <strong>4 weeks · 4 fixed sessions · THB 2,490</strong>
+          <p>One 50-minute class weekly in an existing empty Tuesday or Thursday 7:30/9:00 slot. Eight founding places; launch only with at least six fully paid runners and a contribution buffer.</p>
+        </aside>
+      </div>
+      <div class="stats" aria-label="Current performance and proposed product facts">
+        <article class="stat"><b>7.2%</b><span>advance occupancy across the captured weekday-morning schedule: 14 of 195 configured seats.<a class="ref" href="#s1">1</a></span></article>
+        <article class="stat"><b>0%</b><span>advance occupancy across six captured Tuesday/Thursday morning occurrences: 0 of 78 seats.<a class="ref" href="#s1">1</a></span></article>
+        <article class="stat"><b>88.5%</b><span>near-term weekend 10:30 snapshot: 23 of 26 seats, showing demand is not uniformly weak.<a class="ref" href="#s1">1</a></span></article>
+        <article class="stat"><b>฿2,490</b><span>proposed founding price for four coached visits—THB 622.50 per session.</span></article>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="decision">
+      <div class="shell">
+        <div class="section-head">
+          <div class="section-no">01 · Decision</div>
+          <div><h2>Replace proven empty supply with one lower-friction course</h2><p class="section-intro">Do not add a new 9:30 slot or ask one unproven cohort to attend twice weekly. Sell one four-week course into an existing empty Tuesday or Thursday class; add the second day only when it independently presells.</p></div>
+        </div>
+        <div class="grid-2">
+          <article class="panel dark">
+            <p class="big-quote">“Runners do not always need more stretching. They need the right mobility at the right time.”</p>
+          </article>
+          <article class="panel lime">
+            <h3>One product, two routines</h3>
+            <p class="tight"><b>READY 10</b> is a short dynamic routine for before running. <b>RESTORE 12</b> is controlled mobility, breathing and optional foam rolling for after a run or a non-running day. Both are modules inside Runner Mobility Lab—not separate public products.</p>
+          </article>
+        </div>
+        <div class="note"><b>Specialist adjustment:</b> “RUN//RESET” was removed as the umbrella name because a Bangkok RE.SET community already combines women's running, stretching and mobility.<a class="ref" href="#s20">20</a> Use the descriptive product name until a formal brand-name screen is completed.</div>
+        <div class="storyline" aria-label="Narrative from current performance to product decision">
+          <article class="story-node"><small>01 · Business signal</small><b>Morning supply is visibly underused</b><p>Only 14 of 195 configured weekday-morning seats were booked in the forward snapshot.</p></article>
+          <article class="story-node"><small>02 · Schedule signal</small><b>Tuesday and Thursday are the clearest gap</b><p>Six observed occurrences across 7:30 and 9:00 had no advance bookings.</p></article>
+          <article class="story-node"><small>03 · Market signal</small><b>A reachable runner audience exists</b><p>The studio has already hosted a run + Pilates event near an active Benjakitti ecosystem.</p></article>
+          <article class="story-node"><small>04 · Product gap</small><b>Specific coaching must beat free stretching</b><p>The paid value is progression, personal feedback and routines for before and after running.</p></article>
+          <article class="story-node"><small>05 · Revenue response</small><b>Pre-sell one four-week cohort</b><p>Replace existing empty supply, require paid validation and scale only after contribution is proven.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="availability">
+      <div class="shell">
+        <div class="section-head">
+          <div class="section-no">02 · Current performance</div>
+          <div><h2>Demand is not reaching weekday mornings</h2><p class="section-intro">The owner reports repeated morning cancellations; the live public timetable gives a directional forward-booking snapshot. “Booked” is inferred as 13 minus the displayed “left” count on 18 August 2026.</p></div>
+        </div>
+        <div class="availability-callout">
+          <strong>0 / 78</strong>
+          <div><b>Zero advance bookings in six Tuesday/Thursday morning classes</b><p>Both 7:30 and 9:00 were empty on Thursday 20, Tuesday 25 and Thursday 27 August. These are the clearest existing slots to test—not evidence for adding another time.</p></div>
+        </div>
+        <div class="analysis-board">
+          <article class="performance-score">
+            <div><small>Captured weekday-morning occupancy</small><strong>7.2%</strong><p>14 implied bookings across 15 scheduled class occurrences and 195 configured seats.</p></div>
+            <footer><b>Operating read:</b> 181 seats were still displayed as available, averaging fewer than one advance booking per scheduled morning occurrence.</footer>
+          </article>
+          <article class="bar-card">
+            <h3>Where advance demand appears</h3>
+            <p>Percentage of configured seats booked in the captured schedule. Weekend classes had shorter lead time, so use the contrast directionally—not as a causal comparison.</p>
+            <div class="bar-row"><span class="bar-label">Tue / Thu mornings</span><span class="bar-track"><span class="bar-fill zero" style="width:0%"></span></span><span class="bar-value">0 / 78 · 0%</span></div>
+            <div class="bar-row"><span class="bar-label">Other weekday mornings</span><span class="bar-track"><span class="bar-fill signal" style="width:12%"></span></span><span class="bar-value">14 / 117 · 12%</span></div>
+            <div class="bar-row"><span class="bar-label">All weekday mornings</span><span class="bar-track"><span class="bar-fill" style="width:7.2%"></span></span><span class="bar-value">14 / 195 · 7.2%</span></div>
+            <div class="bar-row"><span class="bar-label">Weekend 10:30</span><span class="bar-track"><span class="bar-fill lime" style="width:88.5%"></span></span><span class="bar-value">23 / 26 · 88.5%</span></div>
+          </article>
+        </div>
+        <div class="claim-table" style="margin-top:0">
+          <table aria-label="Rezerv weekday morning availability captured 18 August 2026">
+            <thead><tr><th>Date</th><th class="num">7:30 booked / 13</th><th class="num">9:00 booked / 13</th><th>Decision</th></tr></thead>
+            <tbody>
+              <tr><td>Wed 19 Aug</td><td class="num">1 / 13</td><td class="num">4 / 13</td><td>Keep as comparator</td></tr>
+              <tr class="candidate"><td><b>Thu 20 Aug</b></td><td class="num"><b>0 / 13</b></td><td class="num"><b>0 / 13</b></td><td><span class="decision-tag">Replace candidate</span></td></tr>
+              <tr><td>Fri 21 Aug</td><td class="num">2 / 13</td><td class="num">1 / 13</td><td>Keep during pilot</td></tr>
+              <tr><td>Mon 24 Aug</td><td class="num">2 / 13</td><td class="num">—</td><td>Monitor</td></tr>
+              <tr class="candidate"><td><b>Tue 25 Aug</b></td><td class="num"><b>0 / 13</b></td><td class="num"><b>0 / 13</b></td><td><span class="decision-tag">Replace candidate</span></td></tr>
+              <tr><td>Wed 26 Aug</td><td class="num">1 / 13</td><td class="num">1 / 13</td><td>Monitor</td></tr>
+              <tr class="candidate"><td><b>Thu 27 Aug</b></td><td class="num"><b>0 / 13</b></td><td class="num"><b>0 / 13</b></td><td><span class="decision-tag">Replace candidate</span></td></tr>
+              <tr><td>Fri 28 Aug</td><td class="num">1 / 13</td><td class="num">1 / 13</td><td>Monitor</td></tr>
+              <tr><td><b>Total</b></td><td class="num"><b>7 / 104</b></td><td class="num"><b>7 / 91</b></td><td><b>14 / 195 combined</b></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="grid-3" style="margin-top:18px">
+          <article class="evidence-card"><span class="badge">Schedule diagnosis</span><h3>Day is the stronger observed signal</h3><p>Tuesday and Thursday were empty at both 7:30 and 9:00. Across all mornings, 7:30 booked 7/104 and 9:00 booked 7/91. The snapshot does not support solving the problem by simply adding 9:30.</p></article>
+          <article class="evidence-card"><span class="badge">Demand diagnosis</span><h3>The studio still attracts group demand</h3><p>The near-term weekend 10:30 classes showed 23/26 booked. Lead times differ, but the contrast suggests a weekday-morning offer/time fit problem—not evidence that the entire studio lacks demand.</p></article>
+          <article class="evidence-card"><span class="badge unknown">Financial boundary</span><h3>Profitability cannot yet be calculated</h3><p>Availability is not attendance or recognized revenue. Net settlement, cancellations, package usage, instructor cost and operating cost are required before calling any class profitable or loss-making.</p></article>
+        </div>
+        <div class="grid-2" style="margin-top:18px">
+          <article class="panel dark"><h3>Recommended schedule decision</h3><p>Shortlist one existing Tuesday slot and one existing Thursday slot at 7:30 or 9:00. Tie each refundable deposit to a specific time. Open the first cohort that clears the launch gate; open the second only if it independently clears the same gate.</p></article>
+          <article class="panel"><h3>Complete the internal performance view</h3><p>Export 8–12 weeks by class: capacity, bookings at T−7/T−24, attendance, late cancellations, package or price paid, actual net revenue, instructor cost and cancellation decision. Protect existing reservations. Reconcile Rezerv's 13 spaces with the public “up to 12” statement before setting capacity.</p></article>
+        </div>
+        <div class="note"><b>Management interpretation:</b> The public snapshot is strong enough to select replacement inventory, but not to diagnose why customers are absent. Interviews and internal booking history must distinguish schedule friction, weak proposition, seasonal travel, instructor fit, acquisition gaps and price sensitivity.</div>
+      </div>
+    </section>
+
+    <section id="market-analysis">
+      <div class="shell">
+        <div class="section-head">
+          <div class="section-no">03 · Market analysis</div>
+          <div><h2>A real runner ecosystem exists—but the reachable market must be earned</h2><p class="section-intro">There is enough local evidence to justify a paid pilot, not enough to claim a large addressable market. The commercial wedge is people the studio or its partners can already reach, followed by nearby recreational runners with a specific race or routine need.</p></div>
+        </div>
+        <div class="grid-3">
+          <article class="evidence-card">
+            <span class="badge">Priority 1 · Warm</span>
+            <h3>Past event + existing clients</h3>
+            <p>The studio hosted a 2.7 km City Run + Mini Pilates event at P23 on 2 August 2026.<a class="ref" href="#s18">18</a> Its participants, partners and current clients who run are the fastest route to a credible paid test.</p>
+          </article>
+          <article class="evidence-card">
+            <span class="badge">Priority 2 · Local</span>
+            <h3>Benjakitti recreational runners</h3>
+            <p>Benjakitti is an official jogging venue in Khlong Toei, while Sabai publishes all-level 3–5 km sessions in the area.<a class="ref" href="#s2">2</a><a class="ref" href="#s22">22</a> This supports local access and partnership relevance, not class demand by itself.</p>
+          </article>
+          <article class="evidence-card">
+            <span class="badge hypothesis">Priority 3 · Seasonal</span>
+            <h3>Race-preparation runners</h3>
+            <p>Major Bangkok race dates on 28–29 November 2026 and 10 January 2027 create legitimate campaign moments.<a class="ref" href="#s8">8</a><a class="ref" href="#s9">9</a> Race entry does not prove willingness to attend weekday mornings.</p>
+          </article>
+        </div>
+
+        <div class="claim-table">
+          <table aria-label="Bangkok runner market evidence and implications">
+            <thead><tr><th>Observed market signal</th><th>What it supports</th><th>What it does not prove</th><th>Commercial response</th></tr></thead>
+            <tbody>
+              <tr><td><b>Studio-owned warm start</b><br>Run + Mini Pilates event already held at P23.<a class="ref" href="#s18">18</a></td><td>Product adjacency, venue fit and an identifiable first audience.</td><td>Attendance, satisfaction, marketing consent or later purchase.</td><td>Audit and reactivate before paying for cold reach.</td></tr>
+              <tr><td><b>Active local communities</b><br>Benjakitti, Sabai, Run Club Bangkok and branded running groups publish activity.<a class="ref" href="#s2">2</a><a class="ref" href="#s3">3</a><a class="ref" href="#s4">4</a></td><td>Running is organized locally and partners can aggregate attention.</td><td>How many members can attend P23 at 7:30 or 9:00.</td><td>Use one partner, one tracked link and exact slot choices.</td></tr>
+              <tr><td><b>Direct paid category</b><br>YogaSutra lists 60-minute Mobility for Runners at THB 800.<a class="ref" href="#s19">19</a></td><td>A runner-specific mobility service and an external price anchor exist nearby.</td><td>Sales volume; the listing showed zero ratings at capture.</td><td>Differentiate with a four-week progression and take-home routines.</td></tr>
+              <tr><td><b>Free substitute</b><br>Run clubs can provide community and basic warm-ups.</td><td>Community is already available without a studio purchase.</td><td>That runners will pay for generic stretching.</td><td>Sell feedback, progression and usable before/after protocols.</td></tr>
+              <tr><td><b>Clinical substitute</b><br>The Balance positions Pilates with physiotherapy in Asok.<a class="ref" href="#s21">21</a></td><td>People with pain have a more clinical option.</td><td>That a fitness studio should make treatment claims.</td><td>Own healthy-runner education and refer symptomatic cases.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="market-thesis">
+          <article class="panel dark">
+            <span class="badge" style="background:var(--lime)">Market thesis</span>
+            <p class="big-quote">Do not build for “all Bangkok runners.” Win a small, reachable wedge whose paid behavior can be measured.</p>
+          </article>
+          <article class="panel">
+            <h3>The defensible white space</h3>
+            <ul class="clean">
+              <li><b>More specific than generic Pilates:</b> runner-relevant ankles, calves, hips, trunk and single-leg control.</li>
+              <li><b>More valuable than a free warm-up:</b> small-cohort feedback, progression and two repeatable routines.</li>
+              <li><b>Less clinical than physiotherapy:</b> movement education for healthy recreational runners, with clear referral boundaries.</li>
+              <li><b>Lower friction than an eight-session commitment:</b> one fixed session weekly for four weeks.</li>
+            </ul>
+          </article>
+        </div>
+        <div class="note"><b>Market-size boundary:</b> No reliable public source in this review quantifies the number of reachable runners who can attend these exact morning slots. Do not publish a fabricated TAM. Use consented contacts, deposits, conversion and renewal to measure the studio's serviceable market.</div>
+      </div>
+    </section>
+
+    <section id="evidence">
+      <div class="shell">
+        <div class="section-head">
+          <div class="section-no">04 · Strategic diagnosis</div>
+          <div><h2>The evidence supports a focused test—not a timetable expansion</h2><p class="section-intro">Local runner activity is visible and the studio owns a relevant warm start. Willingness to buy this exact product, at this time and price, is not yet proven.</p></div>
+        </div>
+        <div class="grid-3">
+          <article class="evidence-card">
+            <span class="badge">Verified</span>
+            <h3>A nearby runner ecosystem exists</h3>
+            <p>Benjakitti is an official jogging venue in Khlong Toei. Sabai documents morning-only Friday and Sunday sessions there for all levels, including 3–5 km runners.<a class="ref" href="#s2">2</a><a class="ref" href="#s4">4</a></p>
+          </article>
+          <article class="evidence-card">
+            <span class="badge hypothesis">Hypothesis</span>
+            <h3>Runners will buy studio mobility</h3>
+            <p>The THB 2,490 price, four-week format and exact 7:30/9:00 replacement slot remain management proposals. Validate them with deposits tied to real dates and times.</p>
+          </article>
+          <article class="evidence-card">
+            <span class="badge unknown">Unknown</span>
+            <h3>The real unit economics</h3>
+            <p>Package mix, marketplace payout, instructor cost, refunds and room cost are unavailable. Use net seat revenue and incremental class cost before launching.</p>
+          </article>
+        </div>
+        <div class="grid-2" style="margin-top:18px">
+          <article class="panel">
+            <h3>Why this audience is timely</h3>
+            <p>Amazing Thailand Marathon Bangkok is scheduled for 28–29 November 2026 with four distances, followed by the Bangkok Marathon on 10 January 2027.<a class="ref" href="#s8">8</a><a class="ref" href="#s9">9</a> These dates create two legitimate campaign moments without proving demand for the class.</p>
+          </article>
+          <article class="panel">
+            <h3>The warm-start audience already exists</h3>
+            <p>The studio was the venue for a 2.7 km City Run + Mini Pilates morning with Mellow.Sundae and Youthfulnest Club on 2 August 2026.<a class="ref" href="#s18">18</a> Audit its registrations, attendance, consent, feedback and subsequent purchases before cold outreach.</p>
+          </article>
+        </div>
+        <div class="positioning">
+          <small>Diagnosis → product requirements</small>
+          <blockquote>The product must be specific enough to beat free stretching, small enough to coach personally, short enough to lower commitment, and presold tightly enough to protect the room hour.</blockquote>
+        </div>
+      </div>
+    </section>
+
+    <section id="product">
+      <div class="shell">
+        <div class="section-head">
+          <div class="section-no">05 · Product system</div>
+          <div><h2>One revenue offer and one paid preview</h2><p class="section-intro">The course is the only launch SKU. A studio-based run + mobility preview exists to feed qualified runners into it; partner clinics wait until the first case study.</p></div>
+        </div>
+        <div class="product-stack">
+          <article class="product primary">
+            <div>
+              <span class="product-kicker">Primary recurring revenue</span>
+              <h3>Runner Mobility Lab</h3>
+              <p class="product-price">THB 2,490<span>4 weeks · 4 × 50 minutes · THB 622.50/visit</span></p>
+            </div>
+            <div>
+              <ul>
+                <li>Once weekly in one existing Tuesday or Thursday 7:30/9:00 slot selected by paid deposits.</li>
+                <li>Same qualified coach and fixed cohort; eight founding places until safe floor capacity is verified.</li>
+                <li>Movement focus: foot/ankle, calf, hip, thoracic rotation, trunk and single-leg control.</li>
+                <li>Simple non-clinical movement check-in in weeks one and four; no diagnosis.</li>
+                <li>Includes READY 10 and RESTORE 12 take-home routines for use between coached sessions.</li>
+                <li>THB 500 refundable reservation; balance due T−7. Launch only with at least six fully paid runners and paid seats ≥ break-even + 2.</li>
+              </ul>
+            </div>
+          </article>
+          <article class="product">
+            <div>
+              <span class="product-kicker">Acquisition event</span>
+              <h3>City Run + Mobility Preview</h3>
+              <p class="product-price">THB 650<span>45-minute paid preview · credited to course within 48 hours</span></p>
+            </div>
+            <div>
+              <ul>
+                <li>Repeat the proven architecture: start and finish at P23 with the original event partner, then move indoors.</li>
+                <li>Maximum 10; minimum six prepaid by T−48. Apply the THB 650 toward Runner Mobility Lab when purchased within 48 hours.</li>
+                <li>Confirm run leader, waiver, route, hydration, bag storage, changing, towel and shower expectations before publishing.</li>
+                <li>Keep only if ≥30% buy the course within seven days or the preview is independently profitable.</li>
+              </ul>
+            </div>
+          </article>
+          <article class="product" style="box-shadow:none">
+            <div>
+              <span class="product-kicker">After proof only</span>
+              <h3>Runner Mobility Club</h3>
+              <p class="product-price">THB 2,290<span>Proposed alumni rate · 4 weekly sessions / 30 days</span></p>
+            </div>
+            <div>
+              <ul>
+                <li>Offer in week three only after the founding course has delivered clear value.</li>
+                <li>One carry-over maximum; every cycle still needs six prepaid members.</li>
+                <li>Keep only if at least 50% of the founding cohort prepays and contribution stays positive.</li>
+                <li>Develop club/private-group formats later, using actual cohort proof and a quote based on margin.</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="programming">
+      <div class="shell">
+        <div class="section-head">
+          <div class="section-no">06 · Programming &amp; claims</div>
+          <div><h2>Dynamic before. Controlled reset after.</h2><p class="section-intro">The product earns credibility by matching the method to the moment and refusing unsupported promises.</p></div>
+        </div>
+        <div class="protocols">
+          <article class="protocol">
+            <header class="protocol-head">
+              <small>Take-home routine · approximately 10 minutes</small>
+              <h3>READY 10</h3>
+              <p>Dynamic movement and short isometric activation before running. Readiness without fatigue.</p>
+            </header>
+            <ol>
+              <li>Foot, ankle and calf movement.</li>
+              <li>Controlled hip mobility.</li>
+              <li>Glute, single-leg and trunk activation.</li>
+              <li>Running-pattern rehearsal.</li>
+              <li>No long passive holds immediately before running.</li>
+            </ol>
+          </article>
+          <article class="protocol">
+            <header class="protocol-head">
+              <small>Take-home routine · approximately 12 minutes</small>
+              <h3>RESTORE 12</h3>
+              <p>Active and controlled mobility, breathing and optional foam rolling after or away from running.</p>
+            </header>
+            <ol>
+              <li>Foot, ankle and calf mobility.</li>
+              <li>Hip rotation and extension.</li>
+              <li>Thoracic rotation and breathing.</li>
+              <li>Optional foam rolling.</li>
+              <li>A short sequence that is easy to repeat independently.</li>
+            </ol>
+          </article>
+        </div>
+
+        <div class="grid-4" style="margin-top:18px">
+          <article class="market-card"><b>Week 1 · Baseline</b><p>Non-clinical movement check-in; feet, ankles and calves.</p></article>
+          <article class="market-card"><b>Week 2 · Hips</b><p>Controlled rotation and extension; introduce RESTORE 12.</p></article>
+          <article class="market-card"><b>Week 3 · Control</b><p>Glute, trunk and single-leg control; introduce READY 10.</p></article>
+          <article class="market-card"><b>Week 4 · Integrate</b><p>Choose the right routine, repeat check-in and set continuation.</p></article>
+        </div>
+
+        <div class="claim-table">
+          <table aria-label="Runner mobility claim boundaries">
+            <thead><tr><th>Evidence point</th><th>Marketing implication</th></tr></thead>
+            <tbody>
+              <tr><td>Runner reviews report possible acute downsides from static stretching and support dynamic stretching when pre-run performance is the goal.<a class="ref" href="#s10">10</a><a class="ref" href="#s11">11</a></td><td><span class="yes">Say:</span> “Dynamic pre-run activation.” Avoid long passive holds in READY 10.</td></tr>
+              <tr><td>Foam rolling can improve acute range of motion and may support perceived recovery, but direct performance benefit is not established.<a class="ref" href="#s12">12</a><a class="ref" href="#s14">14</a></td><td><span class="yes">Say:</span> “Optional foam rolling for range and recovery perception.” <span class="no">Do not say:</span> “Run faster.”</td></tr>
+              <tr><td>Routine static stretching has not been shown to reduce overall injury rates.<a class="ref" href="#s15">15</a></td><td><span class="no">Do not say:</span> “Prevents running injuries.”</td></tr>
+              <tr><td>Stretching and foam rolling were not superior to all other warm-up methods for acute range or stiffness in a 2024 review.<a class="ref" href="#s16">16</a></td><td>Sell the coaching, timing and repeatable routine—not a miracle technique.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="note"><b>Safety language:</b> Runner Mobility Lab is fitness and movement education, not physiotherapy or medical treatment. Current pain, recent injury or surgery, neurological symptoms or medical restrictions should trigger referral to an appropriate healthcare professional.</div>
+      </div>
+    </section>
+
+    <section id="go-to-market">
+      <div class="shell">
+        <div class="section-head">
+          <div class="section-no">07 · Go-to-market</div>
+          <div><h2>Convert the warm wedge before buying reach</h2><p class="section-intro">The market analysis identifies who to pursue; this sequence turns that audience into trackable paid demand, beginning with the 2 August event participants and existing client relationships.</p></div>
+        </div>
+        <div class="grid-4">
+          <article class="market-card"><b>1 · Past event</b><p>Audit the P23 City Run + Mini Pilates registrations, attendance, consent, price, feedback and subsequent purchases.<a class="ref" href="#s18">18</a></p></article>
+          <article class="market-card"><b>2 · Known customers</b><p>Identify current and lapsed clients who already run. Ask for a deposit against one real slot.</p></article>
+          <article class="market-card"><b>3 · Local clubs</b><p>Start with the existing event partners, then one accessible Benjakitti organizer such as Sabai—not several large brands at once.<a class="ref" href="#s22">22</a></p></article>
+          <article class="market-card"><b>4 · Brands later</b><p>Approach adidas, On or RYA only after one profitable cohort produces a credible case study.<a class="ref" href="#s5">5</a><a class="ref" href="#s6">6</a><a class="ref" href="#s7">7</a></p></article>
+        </div>
+        <div class="positioning">
+          <small>Recommended public positioning</small>
+          <blockquote>Stop guessing what to stretch. Learn a dynamic routine for before running and controlled mobility for after.</blockquote>
+        </div>
+        <div class="grid-3" style="margin-top:18px">
+          <article class="market-card"><b>Lead with the job</b><p>“Know what to do before and after running”—not a vague promise to become more flexible.</p></article>
+          <article class="market-card"><b>Show the paid difference</b><p>Four-week progression, individual coaching and two routines distinguish the course from a free club warm-up.</p></article>
+          <article class="market-card"><b>State the boundary</b><p>For healthy recreational runners; fitness education rather than injury treatment or physiotherapy.</p></article>
+        </div>
+        <div class="grid-2" style="margin-top:18px">
+          <article class="panel">
+            <h3>Landing-page essentials</h3>
+            <ul class="clean">
+              <li>Exact dates, time, coach, teaching language and location.</li>
+              <li>Four fixed 50-minute weekly sessions; same coach and cohort.</li>
+              <li>Ankles, hips, trunk and single-leg control.</li>
+              <li>Healthy recreational and race-prep runners; clear exclusions.</li>
+              <li>READY 10 and RESTORE 12 take-home routines.</li>
+              <li>One CTA: “Reserve a founding place — THB 500 refundable deposit.”</li>
+            </ul>
+          </article>
+          <article class="script">
+            <h3>Partner outreach</h3>
+            <blockquote>“We are turning the City Run + Mini Pilates idea into a four-week Runner Mobility Lab at our Sukhumvit 23 studio. Could we invite your past event participants through your official channel, use one tracked registration link and decide from paid conversion whether to repeat it?”</blockquote>
+          </article>
+        </div>
+
+        <div class="journey" aria-label="Runner customer journey">
+          <div class="journey-step"><small>01 · Reconnect</small><b>Past event participant, partner, client or referral</b></div>
+          <div class="journey-step"><small>02 · Experience</small><b>City Run + Mobility Preview at P23</b></div>
+          <div class="journey-step"><small>03 · Commit</small><b>Prepaid four-week Runner Mobility Lab</b></div>
+          <div class="journey-step"><small>04 · Complete</small><b>Repeat movement check-in and routine-use review</b></div>
+          <div class="journey-step"><small>05 · Renew</small><b>Runner Mobility Club, standard pack or appropriate private work</b></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="launch">
+      <div class="shell">
+        <div class="section-head">
+          <div class="section-no">08 · 90-day launch</div>
+          <div><h2>Pre-sell the cohort before expanding the timetable</h2><p class="section-intro">The sequence protects morning economics and forces real demand evidence before the studio adds supply.</p></div>
+        </div>
+        <div class="roadmap">
+          <article class="phase">
+            <small>Days 1–10</small><h3>Qualify</h3>
+            <ul><li>Audit the 2 August event.</li><li>Find current and lapsed runners.</li><li>Interview 20 qualified prospects.</li><li>Confirm instructor scope and safe eight-person layout.</li><li>Build one exact product page.</li></ul>
+          </article>
+          <article class="phase">
+            <small>Days 11–21</small><h3>Pre-sell</h3>
+            <ul><li>Offer real Tuesday/Thursday slot choices.</li><li>Invite through the original partners first.</li><li>Publish three educational proof posts.</li><li>Take THB 500 deposits, not poll votes.</li><li>Collect the balance at T−7.</li></ul>
+          </article>
+          <article class="phase">
+            <small>Days 22–49</small><h3>Deliver</h3>
+            <ul><li>Run all four weekly sessions.</li><li>Track source and attendance.</li><li>Deliver READY 10 and RESTORE 12.</li><li>Collect week-two feedback.</li><li>Pre-sell renewal in week three.</li></ul>
+          </article>
+          <article class="phase">
+            <small>Days 50–90</small><h3>Decide</h3>
+            <ul><li>Repeat one tracked P23 run preview.</li><li>Align cycle two to November.</li><li>Open the second day only if independently funded.</li><li>Keep channels that contribute.</li><li>Prepare the January race cycle.</li></ul>
+          </article>
+        </div>
+        <div class="grid-2" style="margin-top:20px">
+          <article class="panel dark">
+            <h3>Go / change / stop rules</h3>
+            <ul class="clean">
+              <li><b>Go at T−7:</b> at least six fully paid and paid seats ≥ break-even + 2.</li>
+              <li><b>Scale:</b> all eight places sold plus four deposit-ready prospects who cannot attend.</li>
+              <li><b>Renew:</b> ≥75% attendance, ≥50% prepaid renewal and positive contribution per room hour.</li>
+              <li><b>Change or stop:</b> two presale attempts fail to reach six fully paid runners.</li>
+              <li><b>Keep preview:</b> ≥30% buy within seven days or the event is independently profitable.</li>
+            </ul>
+            <p class="fine">These are proposed management rules, not industry benchmarks.</p>
+          </article>
+          <article class="panel">
+            <h3>How Tuesday and Thursday scale</h3>
+            <p>Do not make one group attend both days. Sell separate once-weekly cohorts into one existing Tuesday slot and one existing Thursday slot. Open the first funded slot; open the second only when its own paid demand clears the same gate.</p>
+            <p class="fine">Preserve any existing bookings and leave the strong weekend 10:30 classes unchanged.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="economics">
+      <div class="shell">
+        <div class="section-head">
+          <div class="section-no">09 · Economics</div>
+          <div><h2>Lower commitment, stronger revenue density</h2><p class="section-intro">THB 2,490 equals THB 622.50 per visit: between the studio's THB 499 and THB 700 package rates and below the nearby THB 800 runner-mobility listing. It remains a proposed founding price, not proven willingness to pay.</p></div>
+        </div>
+        <div class="economics">
+          <div>
+            <div class="claim-table no-break" style="margin-top:0">
+              <table aria-label="Four-week cohort cash scenarios">
+                <thead><tr><th>Paid members</th><th class="num">Four-week cash</th><th class="num">Revenue / session</th></tr></thead>
+                <tbody>
+                  <tr><td>6</td><td class="num">THB 14,940</td><td class="num">THB 3,735</td></tr>
+                  <tr><td><b>8 · pilot cap</b></td><td class="num"><b>THB 19,920</b></td><td class="num"><b>THB 4,980</b></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <article class="panel" style="margin-top:16px">
+              <h3>Use the amount actually received</h3>
+              <p>Do not substitute list price if marketplace payout, discounts, unlimited packages, tax, payment fees, refunds or cancellation handling change the studio's net revenue.</p>
+              <p class="fine">Break-even seats = ceiling(total fixed pilot cost ÷ unit contribution), where unit contribution is actual net revenue per member minus variable member cost.</p>
+            </article>
+          </div>
+          <aside class="calculator" aria-labelledby="calc-title">
+            <h3 id="calc-title">Cohort calculator</h3>
+            <p>Replace the reference price with the amount actually settled and include all pilot costs.</p>
+            <div class="inputs">
+              <label>Paid members<input id="members" type="number" min="0" step="1" value="8"></label>
+              <label>Net revenue / member<input id="price" type="number" min="0" step="1" value="2490"></label>
+              <label>Sessions / cycle<input id="sessions" type="number" min="1" step="1" value="4"></label>
+              <label>Variable cost / member<input id="variableCost" type="number" min="0" step="1" value="0"></label>
+              <label>Total fixed pilot cost<input id="fixedCost" type="number" min="0" step="1" placeholder="Enter actual"></label>
+            </div>
+            <div class="calc-results" aria-live="polite">
+              <div class="calc-result"><small>Cash collected</small><b id="cash">THB 19,920</b></div>
+              <div class="calc-result"><small>Revenue / session</small><b id="perSession">THB 4,980</b></div>
+              <div class="calc-result"><small>Contribution / cycle</small><b id="contribution">Enter cost</b></div>
+              <div class="calc-result"><small>Break-even members</small><b id="breakEven">Enter cost</b></div>
+            </div>
+            <p class="fine">Fixed pilot cost should include instructor, incremental room/operations, launch marketing, partner fees and relevant opportunity cost. Add fixed overhead separately if required.</p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section id="measurement">
+      <div class="shell">
+        <div class="section-head">
+          <div class="section-no">10 · Measurement</div>
+          <div><h2>Measure revenue quality and product use</h2><p class="section-intro">Movement check-ins can support the coaching story, but the business decision belongs to paid demand, contribution and renewal.</p></div>
+        </div>
+        <div class="kpis">
+          <div class="kpi"><b>Paid deposits / invitations</b><span>Real presale conversion, not survey interest</span></div>
+          <div class="kpi"><b>Net revenue / attended seat</b><span>After channel, fee and package effects</span></div>
+          <div class="kpi"><b>Paid occupancy + show rate</b><span>At T−24 and T−12, by session</span></div>
+          <div class="kpi"><b>Taster → cohort conversion</b><span>By club, retailer, reel or referral code</span></div>
+          <div class="kpi"><b>Completion + renewal</b><span>Four-session completion and next-cycle prepayment</span></div>
+          <div class="kpi"><b>Contribution / room hour</b><span>The north-star morning supply metric</span></div>
+          <div class="kpi"><b>Routine use</b><span>Percentage using the taught routine at least weekly</span></div>
+          <div class="kpi"><b>Self-rated usefulness</b><span>Perceived value and recovery—not medical outcomes</span></div>
+        </div>
+        <div class="grid-2" style="margin-top:22px">
+          <article class="panel">
+            <h3>Runner interview</h3>
+            <ol class="clean">
+              <li>Where, when and with whom do you run?</li>
+              <li>What distances do you usually run?</li>
+              <li>Are you preparing for a dated event?</li>
+              <li>What do you do before and after running now?</li>
+              <li>Which areas feel restricted—not medically diagnosed?</li>
+              <li>Do you value activation, recovery-day mobility or both?</li>
+              <li>Which exact existing slot can you attend weekly: Tuesday or Thursday at 7:30 or 9:00?</li>
+              <li>What teaching language do you need?</li>
+              <li>What would make the class feel worth paying for?</li>
+              <li>If the dates fit, will you place a paid/refundable deposit?</li>
+            </ol>
+          </article>
+          <article class="script">
+            <h3>Owner reactivation copy</h3>
+            <blockquote>“Hi [Name]—Pink from The Breathing Room here. We are turning our runner + Pilates idea into a four-week Runner Mobility Lab: one coached session weekly, plus short routines for before and after running. We are testing existing Tuesday/Thursday morning slots. Which exact time could you attend—and, if the dates fit, may I send the THB 500 refundable deposit link?”</blockquote>
+            <p class="fine">If current pain, recent injury or post-surgery return-to-run comes up, refer rather than sell treatment.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="sources">
+      <div class="shell">
+        <div class="section-head">
+          <div class="section-no">11 · Sources</div>
+          <div><h2>Evidence trail</h2><p class="section-intro">Public schedules and offers can change. Facts were checked on 18 August 2026. Proposed products, timing, thresholds and copy are management recommendations to validate.</p></div>
+        </div>
+        <ol class="source-list">
+          <li id="s1"><b>The Breathing Room:</b> <a href="https://the-breathing-room.rezerv.co/timetable">timetable</a>, <a href="https://the-breathing-room.rezerv.co/package">packages</a>, <a href="https://the-breathing-room.rezerv.co/class">classes</a>, <a href="https://the-breathing-room.rezerv.co/location">location</a>, <a href="https://the-breathing-room.rezerv.co/team">team</a>, <a href="https://the-breathing-room.rezerv.co/contact-us">contact</a> and <a href="https://the-breathing-room.rezerv.co/faqs">FAQ</a>.</li>
+          <li id="s2"><b>Bangkok Metropolitan Administration:</b> <a href="https://invest.bangkok.go.th/park/">Benjakitti Park</a>.</li>
+          <li id="s3"><b>Run Club Bangkok:</b> <a href="https://www.runclubbangkok.com/en">directory</a> and <a href="https://www.runclubbangkok.com/en/weekly-club-calendar">weekly calendar</a>.</li>
+          <li id="s4"><b>Sabai Run Club:</b> <a href="https://www.sabairunclub.com/faq">FAQ</a> and <a href="https://www.sabairunclub.com/">home page</a>.</li>
+          <li id="s5"><b>adidas Runners:</b> <a href="https://www.adidas.co.th/adidasrunners/community/bangkok">Bangkok community</a>.</li>
+          <li id="s6"><b>Siam Piwat:</b> <a href="https://www.siampiwat.com/en/news/451">On Store Bangkok and On Run Club Thailand</a>.</li>
+          <li id="s7"><b>RYA Athletics:</b> <a href="https://www.rya-athletics.com/">weekly runs and community events</a>.</li>
+          <li id="s8"><b>Amazing Thailand Marathon Bangkok:</b> <a href="https://amazingthailandmarathon.com/">official event site</a> and <a href="https://www.amazingthailandmarathon2026.com/">2026 event site</a>.</li>
+          <li id="s9"><b>Bangkok Marathon:</b> <a href="https://register.bkkmarathon.com/">official registration site</a>.</li>
+          <li id="s10"><b>Static stretching and runners:</b> <a href="https://pubmed.ncbi.nlm.nih.gov/35096248/">systematic review</a> (2021).</li>
+          <li id="s11"><b>Stretching and running performance:</b> <a href="https://pubmed.ncbi.nlm.nih.gov/33551850/">scoping review</a> (2021).</li>
+          <li id="s12"><b>Foam rolling:</b> <a href="https://pubmed.ncbi.nlm.nih.gov/32825976/">systematic review and meta-analysis</a> (2020).</li>
+          <li id="s13"><b>Foam rolling practice:</b> <a href="https://pubmed.ncbi.nlm.nih.gov/32507141/">systematic review</a> (2020).</li>
+          <li id="s14"><b>Foam rolling in athletes:</b> <a href="https://pubmed.ncbi.nlm.nih.gov/38249097/">systematic review</a> (2024).</li>
+          <li id="s15"><b>Stretching and injury prevention:</b> <a href="https://pubmed.ncbi.nlm.nih.gov/18785063/">systematic review</a> (2008).</li>
+          <li id="s16"><b>Stretching / rolling versus other warm-ups:</b> <a href="https://pubmed.ncbi.nlm.nih.gov/38244921/">systematic review and meta-analysis</a> (2024).</li>
+          <li id="s17"><b>Dynamic stretching:</b> <a href="https://pubmed.ncbi.nlm.nih.gov/29063454/">systematic review</a> (2018).</li>
+          <li id="s18"><b>The Breathing Room runner warm start:</b> <a href="https://thestandard.co/life/life-this-week-29-4-aug-2026/">The Standard listing for the 2 August 2026 Mellow.Sundae × Youthfulnest City Run + Mini Pilates event at P23</a>.</li>
+          <li id="s19"><b>Direct category listing:</b> <a href="https://www.gowabi.com/en/organization_services/mobility-for-runners-all-levels">YogaSutra Mobility for Runners on GoWabi</a>; price, duration and rating status captured 18 August 2026.</li>
+          <li id="s20"><b>Local naming / community overlap:</b> <a href="https://www.meetup.com/re-set-health-fitness-bangkok/">RE.SET Health &amp; Fitness Bangkok on Meetup</a>.</li>
+          <li id="s21"><b>Nearby clinical substitute:</b> <a href="https://page.line.me/thebalancepilates">The Balance Pilates &amp; Physiotherapy official LINE profile</a>.</li>
+          <li id="s22"><b>Sabai timing:</b> <a href="https://www.sabairunclub.com/schedule">official schedule</a> and <a href="https://www.sabairunclub.com/faq">FAQ</a>.</li>
+        </ol>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell footer-grid"><span>The Breathing Room · Morning Revenue Recovery · Runner Mobility Lab</span><span>Specialist-reviewed · 18 August 2026</span></div>
+  </footer>
+
+  <script>
+    (function () {
+      const ids = ["members", "price", "sessions", "variableCost", "fixedCost"];
+      const fields = Object.fromEntries(ids.map(id => [id, document.getElementById(id)]));
+      const out = {
+        cash: document.getElementById("cash"),
+        perSession: document.getElementById("perSession"),
+        contribution: document.getElementById("contribution"),
+        breakEven: document.getElementById("breakEven")
+      };
+      const money = value => "THB " + Math.round(value).toLocaleString("en-US");
+      function calculate() {
+        const members = Number(fields.members.value) || 0;
+        const price = Number(fields.price.value) || 0;
+        const sessions = Math.max(1, Number(fields.sessions.value) || 1);
+        const variableCost = Number(fields.variableCost.value) || 0;
+        const rawCost = fields.fixedCost.value.trim();
+        const fixedCost = Number(rawCost);
+        const cash = members * price;
+        out.cash.textContent = money(cash);
+        out.perSession.textContent = money(cash / sessions);
+        if (rawCost === "" || !Number.isFinite(fixedCost)) {
+          out.contribution.textContent = "Enter cost";
+          out.breakEven.textContent = "Enter cost";
+          return;
+        }
+        const unitContribution = price - variableCost;
+        out.contribution.textContent = money((members * unitContribution) - fixedCost);
+        out.breakEven.textContent = unitContribution > 0 ? String(Math.ceil(fixedCost / unitContribution)) : "—";
+      }
+      ids.forEach(id => fields[id].addEventListener("input", calculate));
+      calculate();
+    }());
+  </script>
+</body>
+</html>
